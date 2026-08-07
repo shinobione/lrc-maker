@@ -1,0 +1,615 @@
+/*
+ * LaunchPAD visual skin
+ *
+ * Presentation-only overrides. The LRC editor, synchronizer, audio engine,
+ * keyboard shortcuts and routing remain implemented by the existing components.
+ */
+
+:root {
+    --lp-bg: #05030b;
+    --lp-panel: rgba(14, 10, 26, 0.78);
+    --lp-panel-strong: rgba(20, 14, 36, 0.9);
+    --lp-line: rgba(255, 255, 255, 0.08);
+    --lp-line-strong: rgba(177, 74, 255, 0.34);
+    --lp-text: #f8f6ff;
+    --lp-muted: #9e96b2;
+    --lp-accent: #a63cff;
+    --lp-accent-2: #5c6cff;
+    --lp-green: #54e69b;
+    --lp-radius: 22px;
+    --lp-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+
+    --theme-rgb: 166, 60, 255;
+    --theme-color: var(--lp-accent);
+    --theme-secondary-color: var(--lp-accent-2);
+    --font-color: var(--lp-text);
+    --muted-font-color: var(--lp-muted);
+    --background-color: var(--lp-bg);
+    --semi-black-color: rgba(6, 4, 13, 0.94);
+    --panel-color: var(--lp-panel);
+    --panel-color-strong: var(--lp-panel-strong);
+    --line-color: var(--lp-line);
+    --border-radius: 14px;
+    --panel-shadow: var(--lp-shadow);
+}
+
+html {
+    background: var(--lp-bg);
+}
+
+body,
+:root {
+    font-family: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+:root {
+    background:
+        radial-gradient(circle at 60% 0, #1b0f35 0, transparent 34%),
+        radial-gradient(circle at 8% 78%, rgba(92, 108, 255, 0.08), transparent 28%),
+        var(--lp-bg);
+}
+
+body {
+    color: var(--lp-text);
+}
+
+.app-main::before {
+    inset: 72px 0 44px;
+    background:
+        radial-gradient(circle at 72% 8%, rgba(166, 60, 255, 0.09), transparent 28%),
+        radial-gradient(circle at 18% 70%, rgba(92, 108, 255, 0.055), transparent 30%);
+}
+
+/* Header / LaunchPAD topbar ------------------------------------------------ */
+.app-header {
+    height: 72px;
+    padding: 0 22px;
+    padding-right: max(22px, env(safe-area-inset-right));
+    padding-left: max(22px, env(safe-area-inset-left));
+    color: var(--lp-text);
+    background: linear-gradient(180deg, rgba(5, 3, 11, 0.97), rgba(5, 3, 11, 0.82));
+    border-bottom: 1px solid var(--lp-line);
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(22px) saturate(1.08);
+}
+
+.app-brand-group {
+    gap: 16px;
+}
+
+.app-title {
+    font-family: "Outfit", sans-serif;
+    font-size: 1.22rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.app-title::after {
+    right: -9px;
+    height: 28px;
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+}
+
+.shinobiwan-brand {
+    width: clamp(112px, 12vw, 160px);
+    min-height: 48px !important;
+    padding: 4px 0 !important;
+    opacity: 0.92;
+}
+
+.shinobiwan-brand:hover {
+    filter: drop-shadow(0 0 14px rgba(166, 60, 255, 0.32));
+}
+
+.shinobiwan-brand img {
+    max-height: 42px;
+}
+
+.app-nav {
+    gap: 6px;
+}
+
+.app-header a {
+    min-width: 48px;
+    min-height: 48px;
+    border-radius: 13px;
+}
+
+.app-tab {
+    color: var(--lp-muted) !important;
+}
+
+.app-tab::before {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 1px solid var(--lp-line);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.025);
+    transform: scale(0.92);
+}
+
+.app-nav:hover .app-tab {
+    color: var(--lp-muted) !important;
+}
+
+.app-nav .app-tab:hover,
+.app-nav > a:target {
+    color: #ffffff !important;
+}
+
+.app-tab:hover::before,
+.app-tab:target::before,
+.app-tab:hover:target::before {
+    border-color: rgba(166, 60, 255, 0.42);
+    background: linear-gradient(135deg, rgba(166, 60, 255, 0.2), rgba(92, 108, 255, 0.08));
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+    transform: scale(1);
+    opacity: 1;
+}
+
+:hover > .app-tab:target::before {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Content shell ----------------------------------------------------------- */
+.app-main {
+    width: min(1380px, calc(100% - 44px));
+    padding-top: 88px;
+    padding-bottom: 58px;
+}
+
+/* Home ------------------------------------------------------------------- */
+.home {
+    inset: 72px 0 44px;
+    background:
+        radial-gradient(circle at 62% 12%, rgba(166, 60, 255, 0.12), transparent 31%),
+        radial-gradient(circle at 18% 82%, rgba(92, 108, 255, 0.09), transparent 32%),
+        transparent;
+}
+
+.home::before {
+    inset: 15% 24%;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 28px;
+    background: rgba(14, 10, 26, 0.26);
+    filter: blur(0);
+}
+
+.home-tip-section {
+    min-width: min(610px, calc(100vw - 44px));
+    padding: 27px 30px;
+    border: 1px solid var(--lp-line);
+    border-radius: var(--lp-radius);
+    background:
+        radial-gradient(circle at 88% 8%, rgba(166, 60, 255, 0.13), transparent 30%),
+        linear-gradient(145deg, rgba(14, 10, 26, 0.94), rgba(20, 14, 36, 0.72));
+    box-shadow: var(--lp-shadow);
+    backdrop-filter: blur(22px);
+}
+
+.home-tip-section > p {
+    color: #b8adc9;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+}
+
+.home-tip-section li {
+    color: #c4bdd0;
+}
+
+.home-tip-item:hover {
+    color: #d7b6ff;
+}
+
+.home-tip {
+    border: 1px solid var(--lp-line);
+    border-radius: 13px;
+    color: #ded8e8;
+    background: rgba(10, 7, 18, 0.82);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+}
+
+/* Editor ----------------------------------------------------------------- */
+.app-editor {
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+    padding: 18px;
+    border: 1px solid var(--lp-line);
+    border-radius: var(--lp-radius);
+    background:
+        radial-gradient(circle at 88% 0, rgba(166, 60, 255, 0.1), transparent 25%),
+        linear-gradient(145deg, rgba(14, 10, 26, 0.88), rgba(9, 6, 17, 0.9));
+    box-shadow: var(--lp-shadow);
+    backdrop-filter: blur(22px);
+}
+
+.app-editor:hover,
+.app-editor:focus-within {
+    border-color: rgba(177, 74, 255, 0.28);
+    box-shadow: var(--lp-shadow);
+}
+
+.editor-tools {
+    gap: 8px;
+    margin: 0 0 14px;
+    padding: 0 !important;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+}
+
+.editor-tools-item {
+    width: 44px;
+    height: 44px;
+    color: var(--lp-muted);
+    border: 1px solid var(--lp-line);
+    border-radius: 12px !important;
+    background: rgba(255, 255, 255, 0.035);
+    box-shadow: none;
+}
+
+.editor-tools-item:hover {
+    color: #ffffff;
+    border-color: rgba(166, 60, 255, 0.42);
+    background: rgba(166, 60, 255, 0.14);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+.app-textarea {
+    min-height: 62vh;
+    padding: 22px 24px !important;
+    color: var(--lp-text);
+    font-family: "Manrope", sans-serif;
+    font-size: clamp(1rem, 1.2vw, 1.15rem);
+    line-height: 1.72;
+    border: 1px solid var(--lp-line) !important;
+    border-radius: 17px;
+    background: rgba(5, 3, 11, 0.64) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.app-textarea:focus {
+    border-color: rgba(166, 60, 255, 0.34) !important;
+    background: rgba(5, 3, 11, 0.78) !important;
+}
+
+/* Synchronizer ----------------------------------------------------------- */
+.lyric-list {
+    margin: 0 auto;
+    padding: 12px 10px 28px;
+    overflow: hidden;
+    border: 1px solid var(--lp-line);
+    border-radius: var(--lp-radius);
+    background: var(--lp-panel);
+    box-shadow: var(--lp-shadow);
+    backdrop-filter: blur(18px);
+}
+
+.line {
+    margin: 4px 6px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.025) !important;
+}
+
+.line:hover {
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.045) !important;
+}
+
+.line.select {
+    border-color: rgba(166, 60, 255, 0.48);
+    background: rgba(166, 60, 255, 0.08) !important;
+}
+
+.line.highlight {
+    color: #ffffff;
+    border-color: rgba(190, 112, 255, 0.55);
+    background: linear-gradient(90deg, rgba(166, 60, 255, 0.62), rgba(92, 108, 255, 0.44)) !important;
+    box-shadow: 0 10px 32px rgba(72, 38, 125, 0.2);
+    transform: none;
+}
+
+.space-button {
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: linear-gradient(135deg, var(--lp-accent), var(--lp-accent-2));
+    box-shadow: 0 18px 46px rgba(97, 49, 160, 0.32);
+}
+
+/* Settings --------------------------------------------------------------- */
+.preferences {
+    padding: 4px 0 82px;
+}
+
+.preferences > ul {
+    width: min(980px, 100%);
+    border: 1px solid var(--lp-line);
+    border-radius: var(--lp-radius);
+    background:
+        radial-gradient(circle at 92% 0, rgba(166, 60, 255, 0.08), transparent 26%),
+        var(--lp-panel);
+    box-shadow: var(--lp-shadow);
+    backdrop-filter: blur(20px);
+}
+
+.preferences li,
+.preferences li:nth-child(even) {
+    padding: 0 22px;
+    border-bottom: 1px solid var(--lp-line);
+    background: transparent;
+}
+
+.preferences li:hover {
+    background: rgba(166, 60, 255, 0.035);
+}
+
+.preferences .list-item {
+    min-height: 66px;
+}
+
+.preferences .link,
+.preferences .option-select > select,
+.preferences input[type="number"] {
+    border: 1px solid var(--lp-line);
+    background: rgba(255, 255, 255, 0.035);
+}
+
+.preferences .link {
+    color: #d6b5f5;
+}
+
+.preferences .link:hover {
+    border-color: rgba(166, 60, 255, 0.42);
+    background: rgba(166, 60, 255, 0.12);
+}
+
+.preferences .dropdown-body {
+    border-color: rgba(166, 60, 255, 0.36);
+    background: rgba(14, 10, 26, 0.97);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.48);
+}
+
+/* Dialogs and secondary surfaces ---------------------------------------- */
+dialog,
+.aside-panel,
+.app-aside,
+.loadaudio,
+.toast {
+    border: 1px solid var(--lp-line);
+    border-radius: 18px;
+    background: var(--lp-panel-strong);
+    box-shadow: var(--lp-shadow);
+    backdrop-filter: blur(22px);
+}
+
+.button {
+    color: var(--lp-text);
+    border: 1px solid var(--lp-line);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.button:hover {
+    color: #ffffff;
+    border-color: rgba(166, 60, 255, 0.4);
+    background: rgba(166, 60, 255, 0.12);
+}
+
+/* Audio / LaunchPAD player bar ------------------------------------------ */
+.app-footer {
+    border-top: 1px solid var(--lp-line);
+    background: rgba(6, 4, 13, 0.95);
+    box-shadow: 0 -16px 44px rgba(0, 0, 0, 0.24);
+    backdrop-filter: blur(24px);
+}
+
+.lrc-audio {
+    min-height: 44px;
+    color: var(--lp-text);
+    background: transparent;
+}
+
+.lrc-audio > button {
+    color: #d5cedf;
+    border-radius: 9px;
+    transition: color 180ms ease, background 180ms ease;
+}
+
+.lrc-audio > button:hover {
+    color: #ffffff;
+    background: rgba(166, 60, 255, 0.1);
+}
+
+.slider > progress {
+    --progress-meter-color: var(--lp-accent);
+
+    background: rgba(255, 255, 255, 0.16);
+    box-shadow: none;
+}
+
+input[type="range"] {
+    color: var(--lp-accent);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    box-shadow: 0 0 0 4px rgba(166, 60, 255, 0.1);
+}
+
+input[type="range"]::-moz-range-thumb {
+    box-shadow: 0 0 0 4px rgba(166, 60, 255, 0.1);
+}
+
+.waveform-container {
+    background: rgba(6, 4, 13, 0.92);
+}
+
+/* Focus and selection ---------------------------------------------------- */
+::selection {
+    color: #ffffff;
+    background: rgba(166, 60, 255, 0.72);
+}
+
+:focus-visible {
+    outline: 2px solid rgba(166, 60, 255, 0.72);
+    outline-offset: 3px;
+}
+
+* {
+    scrollbar-color: rgba(166, 60, 255, 0.42) #08050e;
+}
+
+*::-webkit-scrollbar-track {
+    background: #08050e;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-color: #08050e;
+    background: rgba(166, 60, 255, 0.42);
+}
+
+/* Responsive ------------------------------------------------------------- */
+@media (width <= 768px) {
+    .app-header {
+        height: 62px;
+        padding: 0 8px;
+        padding-right: max(8px, env(safe-area-inset-right));
+        padding-left: max(8px, env(safe-area-inset-left));
+    }
+
+    .app-brand-group {
+        gap: 7px;
+    }
+
+    .shinobiwan-brand {
+        width: 90px;
+        min-height: 42px !important;
+    }
+
+    .app-header a {
+        min-width: 40px;
+        min-height: 42px;
+        padding: 0 4px;
+        border-radius: 11px;
+    }
+
+    .app-title::after {
+        right: -4px;
+    }
+
+    .app-main {
+        width: 100%;
+        padding-top: 72px;
+    }
+
+    .home {
+        inset: 62px 0 44px;
+    }
+
+    .home::before {
+        inset: 14% 8%;
+    }
+
+    .home-tip-section {
+        min-width: calc(100vw - 26px);
+        padding: 20px;
+        border-radius: 18px;
+    }
+
+    .app-editor {
+        width: calc(100% - 18px);
+        margin: 0 auto;
+        padding: 10px;
+        border: 1px solid var(--lp-line);
+        border-radius: 18px;
+        background: rgba(14, 10, 26, 0.72);
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24);
+    }
+
+    .editor-tools {
+        align-self: flex-end;
+        justify-content: flex-end;
+        margin-bottom: 8px;
+    }
+
+    .app-textarea {
+        min-height: 61vh;
+        padding: 14px !important;
+        border-radius: 13px;
+    }
+
+    .lyric-list {
+        width: calc(100% - 18px);
+        margin: 0 auto;
+        padding: 8px 4px 18px;
+        border-radius: 18px;
+    }
+
+    .line {
+        margin: 3px 4px;
+        border-radius: 10px;
+    }
+
+    .preferences {
+        padding: 0 9px 78px;
+    }
+
+    .preferences > ul {
+        border-radius: 18px;
+    }
+
+    .preferences li,
+    .preferences li:nth-child(even) {
+        padding: 0 14px;
+    }
+
+    .app-footer {
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+}
+
+@media (width <= 480px) {
+    .shinobiwan-brand {
+        width: 78px;
+    }
+
+    .app-nav {
+        gap: 2px;
+    }
+
+    .app-header a {
+        min-width: 37px;
+    }
+
+    .app-title-svg > svg,
+    .app-tab > svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .home-tip {
+        display: none;
+    }
+
+    .home-tip-section {
+        min-width: calc(100vw - 20px);
+        padding: 18px 16px;
+    }
+
+    .editor-tools-item {
+        width: 40px;
+        height: 40px;
+    }
+
+    .preferences .list-item {
+        gap: 10px;
+        min-height: 60px;
+    }
+}
