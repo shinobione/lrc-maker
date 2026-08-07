@@ -52,7 +52,8 @@
         "saveToGist": "Save to Github Gist",
         "saveFileName": "File name",
         "utils": "LRC tools",
-        "removeEmptyLines": "Remove empty lines"
+        "removeEmptyLines": "Remove empty lines",
+        "removeTags": "Remove [ ] tags"
     },
     "gist": {
         "newTokenTip": "LRC Maker uses a Github token to read and store data in Github Gist",
@@ -89,6 +90,8 @@
     "notify": {
         "audioLoaded": "Audio loaded.",
         "emptyLinesRemoved": "Empty lines removed.",
-        "noEmptyLines": "No empty lines to remove."
+        "noEmptyLines": "No empty lines to remove.",
+        "tagsRemoved": "Tags between [ ] removed.",
+        "noTags": "No [ ] tags to remove."
     }
 }
