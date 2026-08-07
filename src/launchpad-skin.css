@@ -420,9 +420,7 @@ dialog,
 .lrc-audio > button {
     color: #d5cedf;
     border-radius: 9px;
-    transition:
-        color 180ms ease,
-        background 180ms ease;
+    transition: color 180ms ease, background 180ms ease;
 }
 
 .lrc-audio > button:hover {
