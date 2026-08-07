@@ -14,6 +14,16 @@ const disableCheck = {
     spellCheck: false,
 };
 
+const bracketTagPattern = /\[([^\r\n]*?)\]/g;
+const lrcTimestampPattern = /^\d{1,3}:\d{2}(?:[.:]\d{1,3})?$/;
+
+const RemoveTagsSVG: React.FC = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="none" d="M0 0h24v24H0z" />
+        <path d="M8 4H5c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h3v-2H6V6h2V4zm8 0v2h2v12h-2v2h3c.55 0 1-.45 1-1V5c0-.55-.45-1-1-1h-3z" />
+    </svg>
+);
+
 type HTMLInputLikeElement = HTMLInputElement & HTMLTextAreaElement;
 
 type UseDefaultValue<T = React.RefObject<HTMLInputLikeElement>> = (
@@ -123,6 +133,59 @@ export const Eidtor: React.FC<{
         });
     }, [lang.notify.emptyLinesRemoved, lang.notify.noEmptyLines, lrcDispatch, trimOptions]);
 
+    const onRemoveTags = useCallback(() => {
+        const target = textarea.current;
+        if (!target) {
+            return;
+        }
+
+        const lines = target.value.split(/\r?\n/);
+        const cleaned: string[] = [];
+        let removedTags = 0;
+
+        for (const line of lines) {
+            let lineChanged = false;
+            const withoutTags = line.replace(bracketTagPattern, (match, content: string) => {
+                if (lrcTimestampPattern.test(content.trim())) {
+                    return match;
+                }
+
+                lineChanged = true;
+                removedTags += 1;
+                return "";
+            });
+
+            if (!lineChanged) {
+                cleaned.push(line);
+                continue;
+            }
+
+            const normalized = withoutTags.replace(/[ \t]{2,}/g, " ").trim();
+            if (normalized.length > 0) {
+                cleaned.push(normalized);
+            }
+        }
+
+        if (removedTags === 0) {
+            toastPubSub.pub({
+                type: "info",
+                text: lang.notify.noTags,
+            });
+            return;
+        }
+
+        const value = cleaned.join("\n");
+        target.value = value;
+        lrcDispatch({
+            type: LrcActionType.parse,
+            payload: { text: value, options: trimOptions },
+        });
+        toastPubSub.pub({
+            type: "success",
+            text: lang.notify.tagsRemoved,
+        });
+    }, [lang.notify.noTags, lang.notify.tagsRemoved, lrcDispatch, trimOptions]);
+
     const downloadName = useMemo(() => lrcFileName(lrcState.info), [lrcState.info]);
 
     return (
@@ -152,6 +215,15 @@ export const Eidtor: React.FC<{
                     onClick={onRemoveEmptyLines}
                 >
                     <UtilitySVG />
+                </button>
+                <button
+                    type="button"
+                    className="editor-tools-item editor-clean-tags ripple"
+                    title={lang.editor.removeTags}
+                    aria-label={lang.editor.removeTags}
+                    onClick={onRemoveTags}
+                >
+                    <RemoveTagsSVG />
                 </button>
             </section>
 
