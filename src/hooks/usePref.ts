@@ -55,18 +55,17 @@ const init = (lazyInit: () => string): State => {
 
     const languages = navigator.languages || [navigator.language || "fr-FR"];
 
-    state.lang =
-        languages
-            .map((langCode) => {
-                if (langCode.startsWith("fr")) {
-                    return "fr-FR";
-                }
-                if (langCode.startsWith("en")) {
-                    return "en-US";
-                }
-                return langCode;
-            })
-            .find((langCode) => langCodeList.includes(langCode)) || "fr-FR";
+    state.lang = languages
+        .map((langCode) => {
+            if (langCode.startsWith("fr")) {
+                return "fr-FR";
+            }
+            if (langCode.startsWith("en")) {
+                return "en-US";
+            }
+            return langCode;
+        })
+        .find((langCode) => langCodeList.includes(langCode)) || "fr-FR";
 
     try {
         const storedState = JSON.parse(lazyInit()) as State;
