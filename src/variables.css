@@ -1,51 +1,70 @@
 :root {
-    --white: #eeeeee;
-    --black: #111111;
+    --white: #f5f1fb;
+    --black: #08050e;
 
-    /* theme color */
-    --theme-rgb: 245, 142, 168;
+    /* SHINOBIWAN / LaunchPAD theme */
+    --theme-rgb: 194, 92, 255;
     --theme-color: rgb(var(--theme-rgb));
-    --theme-contrast-color: var(--black);
+    --theme-contrast-color: #11091c;
+    --theme-secondary-color: #f29ab2;
+    --theme-cyan: #6fd9ff;
 
     /* text color */
-    --font-color: var(--black);
-    --background-color: #f1f3f4;
+    --font-color: #f3eef8;
+    --muted-font-color: #aaa0b7;
+    --background-color: #08050e;
 
-    /* semi color */
-    --semi-black-color: #202020cc;
-    --semi-white-color: #e0e0e0cc;
+    /* surfaces */
+    --semi-black-color: #0b0712e8;
+    --semi-white-color: #f3eef8d9;
+    --panel-color: #110b1bd9;
+    --panel-color-strong: #0c0815f2;
+    --line-color: #ffffff17;
 
     /* border */
-    --border-radius: 8px;
+    --border-radius: 12px;
 
     /* shadow */
-    --text-shadow: 0 0 2px var(--black);
-    --drop-shadow: drop-shadow(0 0 4px currentColor);
+    --text-shadow: 0 0 14px rgb(var(--theme-rgb), 0.2);
+    --drop-shadow: drop-shadow(0 0 8px rgb(var(--theme-rgb), 0.35));
+    --panel-shadow: 0 18px 55px #00000059;
 
     /* duration */
-    --transition-duration: 250ms;
-    --animation-duration: 250ms;
-    --animation-durationx2: 500ms;
+    --transition-duration: 200ms;
+    --animation-duration: 240ms;
+    --animation-durationx2: 460ms;
 
     /* animation */
     --animation-out-back: cubic-bezier(0.18, 0.89, 0.32, 1.28);
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
     :root {
-        --font-color: var(--white);
-        --background-color: var(--black);
+        --font-color: #19121f;
+        --muted-font-color: #675c70;
+        --background-color: #f5f2f8;
+        --panel-color: #ffffffdc;
+        --panel-color-strong: #fffffff2;
+        --line-color: #2d183219;
     }
 }
 
 [data-theme="light"] {
-    --font-color: var(--black);
-    --background-color: #f1f3f4;
+    --font-color: #19121f;
+    --muted-font-color: #675c70;
+    --background-color: #f5f2f8;
+    --panel-color: #ffffffdc;
+    --panel-color-strong: #fffffff2;
+    --line-color: #2d183219;
 }
 
 [data-theme="dark"] {
-    --font-color: var(--white);
-    --background-color: var(--black);
+    --font-color: #f3eef8;
+    --muted-font-color: #aaa0b7;
+    --background-color: #08050e;
+    --panel-color: #110b1bd9;
+    --panel-color-strong: #0c0815f2;
+    --line-color: #ffffff17;
 }
 
 @media (prefers-reduced-motion: reduce) {
