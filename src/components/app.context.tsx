@@ -27,7 +27,6 @@ export const enum ChangBits {
     // lrcFormat = 1 << Bits.lrcFormat,
     builtInAudio = 1 << Bits.builtInAudio,
     // screenButton = 1 << Bits.screenButton,
-    // themeColor = 1 << Bits.themeColor,
     prefState = 1 << Bits.prefState,
 }
 
@@ -37,25 +36,6 @@ export const appContext = createContext<IAppContext>(undefined, (prev, next) => 
     if (prev.lang !== next.lang) {
         bits |= ChangBits.lang;
     }
-
-    // const changed = (prop: keyof IAppContext["prefState"]) => {
-    //     return prev.prefState[prop] !== next.prefState[prop];
-    // };
-
-    // if (changed("spaceStart") || changed("spaceEnd") || changed("fixed")) {
-    //     bits |= ChangBits.lrcFormat;
-    // }
-
-    // if (changed("builtInAudio")) {
-    //     bits |= ChangBits.builtInAudio;
-    // }
-    // if (changed("screenButton")) {
-    //     bits |= ChangBits.screenButton;
-    // }
-
-    // if (changed("themeColor")) {
-    //     bits |= ChangBits.themeColor;
-    // }
 
     if (prev.prefState.builtInAudio !== next.prefState.builtInAudio) {
         bits |= ChangBits.builtInAudio;
@@ -83,7 +63,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, [prefState.lang, setLang]);
 
     useEffect(() => {
-        document.title = lang.app.fullname;
+        document.title = "SHINOBIWAN LRC Maker";
         document.documentElement.lang = prefState.lang;
     }, [lang, prefState, prefState.lang]);
 
