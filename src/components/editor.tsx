@@ -5,6 +5,7 @@ import { ActionType as LrcActionType } from "../hooks/useLrc.js";
 import { lrcFileName } from "../utils/lrc-file-name.js";
 import { appContext } from "./app.context.js";
 import { CopySVG, DownloadSVG, OpenFileSVG, UtilitySVG } from "./svg.js";
+import { toastPubSub } from "./toast.js";
 
 const disableCheck = {
     autoCapitalize: "none",
@@ -93,6 +94,35 @@ export const Eidtor: React.FC<{
         document.execCommand("copy");
     }, []);
 
+    const onRemoveEmptyLines = useCallback(() => {
+        const target = textarea.current;
+        if (!target) {
+            return;
+        }
+
+        const lines = target.value.split(/\r?\n/);
+        const cleaned = lines.filter((line) => line.trim().length > 0);
+
+        if (cleaned.length === lines.length) {
+            toastPubSub.pub({
+                type: "info",
+                text: lang.notify.noEmptyLines,
+            });
+            return;
+        }
+
+        const value = cleaned.join("\n");
+        target.value = value;
+        lrcDispatch({
+            type: LrcActionType.parse,
+            payload: { text: value, options: trimOptions },
+        });
+        toastPubSub.pub({
+            type: "success",
+            text: lang.notify.emptyLinesRemoved,
+        });
+    }, [lang.notify.emptyLinesRemoved, lang.notify.noEmptyLines, lrcDispatch, trimOptions]);
+
     const downloadName = useMemo(() => lrcFileName(lrcState.info), [lrcState.info]);
 
     return (
@@ -114,20 +144,20 @@ export const Eidtor: React.FC<{
                 >
                     <DownloadSVG />
                 </a>
-                <a
-                    title={lang.editor.utils}
-                    href="https://lrc-maker.github.io/lrc-utils/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="editor-tools-item ripple"
+                <button
+                    type="button"
+                    className="editor-tools-item editor-clean-lines ripple"
+                    title={lang.editor.removeEmptyLines}
+                    aria-label={lang.editor.removeEmptyLines}
+                    onClick={onRemoveEmptyLines}
                 >
                     <UtilitySVG />
-                </a>
+                </button>
             </section>
 
             <textarea
                 className="app-textarea"
-                aria-label="lrc input here"
+                aria-label="LRC editor"
                 onBlur={parse}
                 {...disableCheck}
                 {...useDefaultValue(text, textarea)}

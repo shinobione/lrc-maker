@@ -1,0 +1,94 @@
+{
+    "languageName": "Français",
+    "app": {
+        "name": "LRC Maker",
+        "fullname": "SHINOBIWAN LRC Maker"
+    },
+    "header": {
+        "home": "Accueil",
+        "editor": "Éditeur LRC",
+        "synchronizer": "Synchronisation",
+        "gist": "Github Gist",
+        "preferences": "Paramètres"
+    },
+    "audio": {
+        "loadAudio": "Charger un audio",
+        "play": "Lecture",
+        "pause": "Pause",
+        "replay5s": "Reculer de 5 s",
+        "forward5s": "Avancer de 5 s",
+        "resetRate": "Réinitialiser la vitesse",
+        "error": [
+            "Erreur audio",
+            "Audio interrompu par l'utilisateur",
+            "Erreur réseau audio",
+            "Erreur de décodage audio",
+            "Format audio non pris en charge"
+        ]
+    },
+    "loadAudio": {
+        "file": "Fichier",
+        "url": "URL",
+        "loadFile": "Clique ici ou dépose un fichier audio sur la page"
+    },
+    "home": {
+        "tips": "Astuces",
+        "tipForLyricText": "Ouvre l'éditeur et colle les paroles.",
+        "tipForUploadAudio": "Utilise le bouton en bas à gauche pour charger l'audio.",
+        "tipForSynchronizer": "Ouvre la synchronisation pour créer ton fichier LRC.",
+        "tipTopLeft": "Retour à l'accueil",
+        "tipTopRight": "Navigation entre les outils",
+        "tipBottomLeft": "Chargement et contrôle de l'audio",
+        "tipBottomRight": "Réglage de la vitesse de lecture"
+    },
+    "editor": {
+        "metaInfo": "Métadonnées",
+        "album": "Album",
+        "title": "Titre",
+        "artist": "Artiste",
+        "uploadText": "Importer un fichier TXT/LRC",
+        "copyText": "Tout sélectionner et copier",
+        "downloadText": "Télécharger le LRC",
+        "saveToGist": "Enregistrer dans Github Gist",
+        "saveFileName": "Nom du fichier",
+        "utils": "Outils LRC",
+        "removeEmptyLines": "Supprimer les lignes vides"
+    },
+    "gist": {
+        "newTokenTip": "LRC Maker utilise un token Github pour lire et stocker des données dans Github Gist",
+        "newTokenButton": "Générer un nouveau token Github",
+        "newGistTip": "Créer un nouveau Gist ou renseigner un identifiant Gist existant",
+        "newGistRepoButton": "Créer un nouveau Gist",
+        "gistIdPlaceholder": "Ou renseigner un identifiant Gist existant",
+        "info": "Informations",
+        "clearTokenAndGist": "Effacer le token et l'identifiant Gist"
+    },
+    "preferences": {
+        "version": "Version SHINOBIWAN",
+        "commitHash": "Commit du fork",
+        "updateTime": "Dernière mise à jour",
+        "repo": "Dépôt du projet",
+        "help": "Aide et documentation",
+        "language": "Langue de l'application",
+        "builtInAudio": "Utiliser le lecteur audio intégré du navigateur",
+        "spaceButton": "Afficher la touche Espace à l'écran",
+        "showWaveform": "Afficher la forme d'onde dans la barre de lecture",
+        "themeColor": "Couleur d'accent",
+        "lrcFormat": "Aperçu du format LRC",
+        "fixed": "Décimales du timestamp",
+        "leftSpace": "Espaces avant les paroles",
+        "rightSpace": "Espaces après les paroles",
+        "clearCache": "Vider le cache de l'application",
+        "themeMode": {
+            "label": "Apparence",
+            "auto": "Automatique",
+            "light": "Clair",
+            "dark": "Sombre"
+        }
+    },
+    "notify": {
+        "audioLoaded": "Audio chargé.",
+        "emptyLinesRemoved": "Lignes vides supprimées.",
+        "noEmptyLines": "Aucune ligne vide à supprimer."
+    }
+}
