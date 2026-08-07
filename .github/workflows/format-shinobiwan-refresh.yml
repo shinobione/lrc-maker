@@ -1,0 +1,45 @@
+name: Format SHINOBIWAN refresh
+
+on:
+  push:
+    branches:
+      - feat/shinobiwan-ui-refresh
+
+permissions:
+  contents: write
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: feat/shinobiwan-ui-refresh
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10.11.0'
+          run_install: true
+
+      - name: Format repository files
+        run: pnpm run fix:fmt
+
+      - name: Commit formatter output when needed
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "No formatter changes required."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html src
+          git commit -m "Format SHINOBIWAN UI refresh"
+          git push origin HEAD:feat/shinobiwan-ui-refresh
