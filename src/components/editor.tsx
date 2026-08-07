@@ -100,7 +100,6 @@ export const Eidtor: React.FC<{
             if (ev.target.files === null || ev.target.files.length === 0) {
                 return;
             }
-
             const fileReader = new FileReader();
             fileReader.addEventListener("load", () => {
                 lrcDispatch({
@@ -200,7 +199,13 @@ export const Eidtor: React.FC<{
                     <CloudUploadSVG />
                 </a>
 
-                <a title={lang.editor.utils} href="/lrc-utils/" className="editor-tools-item ripple">
+                <a
+                    title={lang.editor.utils}
+                    href="https://lrc-maker.github.io/lrc-utils/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="editor-tools-item ripple"
+                >
                     <UtilitySVG />
                 </a>
             </section>
