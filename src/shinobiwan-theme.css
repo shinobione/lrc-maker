@@ -72,9 +72,7 @@ select {
     border: 1px solid #ffffff0a !important;
     border-radius: 14px;
     background: #04020859 !important;
-    transition:
-        border-color var(--transition-duration) ease,
-        background var(--transition-duration) ease;
+    transition: border-color var(--transition-duration) ease, background var(--transition-duration) ease;
 }
 
 .app-textarea:focus {
@@ -144,9 +142,7 @@ select {
     background:
         radial-gradient(circle at 90% 0%, rgb(var(--theme-rgb), 0.07), transparent 28%),
         #0c0813d6;
-    box-shadow:
-        0 24px 70px #00000038,
-        inset 0 1px 0 #ffffff08;
+    box-shadow: 0 24px 70px #00000038, inset 0 1px 0 #ffffff08;
     backdrop-filter: blur(18px) saturate(1.08);
 }
 
