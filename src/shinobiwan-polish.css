@@ -22,9 +22,7 @@
     background:
         radial-gradient(circle at 88% 5%, rgba(166, 60, 255, 0.13), transparent 30%),
         linear-gradient(145deg, rgba(14, 10, 26, 0.98), rgba(8, 5, 15, 0.98));
-    box-shadow:
-        0 30px 90px rgba(0, 0, 0, 0.62),
-        0 0 0 100vmax rgba(3, 1, 8, 0.76);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.62), 0 0 0 100vmax rgba(3, 1, 8, 0.76);
     backdrop-filter: blur(24px) saturate(1.08);
 }
 
@@ -57,10 +55,7 @@
 .loadaudio-tab > label {
     color: var(--lp-muted);
     border-bottom-color: rgba(166, 60, 255, 0.34);
-    transition:
-        color 180ms ease,
-        background 180ms ease,
-        border-color 180ms ease;
+    transition: color 180ms ease, background 180ms ease, border-color 180ms ease;
 }
 
 .loadaudio-tab > label:hover {
