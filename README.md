@@ -28,19 +28,17 @@ Cette version conserve le moteur LRC et le workflow de synchronisation qui font 
 
 ## Raccourcis principaux
 
-| Touche | Action |
-| --- | --- |
-| `Espace` | Insérer le timestamp sur la ligne sélectionnée |
-| `Retour arrière` / `Suppr` | Supprimer le timestamp |
-| `Ctrl + Entrée` / `Cmd + Entrée` | Lecture / pause |
-| `←` / `A` | Reculer de 5 secondes |
-| `→` / `D` | Avancer de 5 secondes |
-| `↑` / `W` / `J` | Ligne précédente |
-| `↓` / `S` / `K` | Ligne suivante |
-| `-` / `+` | Ajuster le timestamp sélectionné |
-| `Ctrl + ↑` / `Cmd + ↑` | Accélérer la lecture |
-| `Ctrl + ↓` / `Cmd + ↓` | Ralentir la lecture |
-| `R` | Réinitialiser la vitesse |
+- `Espace` : insérer le timestamp sur la ligne sélectionnée.
+- `Retour arrière` / `Suppr` : supprimer le timestamp.
+- `Ctrl + Entrée` / `Cmd + Entrée` : lecture / pause.
+- `←` / `A` : reculer de 5 secondes.
+- `→` / `D` : avancer de 5 secondes.
+- `↑` / `W` / `J` : ligne précédente.
+- `↓` / `S` / `K` : ligne suivante.
+- `-` / `+` : ajuster le timestamp sélectionné.
+- `Ctrl + ↑` / `Cmd + ↑` : accélérer la lecture.
+- `Ctrl + ↓` / `Cmd + ↓` : ralentir la lecture.
+- `R` : réinitialiser la vitesse.
 
 ## Développement local
 
