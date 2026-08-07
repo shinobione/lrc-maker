@@ -1,0 +1,183 @@
+/* Final SHINOBIWAN UI polish layer. Functional behavior stays unchanged. */
+
+.editor-clean-lines {
+    color: #d6c6e8;
+}
+
+.editor-clean-lines:hover {
+    color: #ffffff;
+    border-color: rgba(166, 60, 255, 0.5);
+    background: linear-gradient(135deg, rgba(166, 60, 255, 0.18), rgba(92, 108, 255, 0.1));
+}
+
+/* Audio loader ----------------------------------------------------------- */
+.dialog[open] {
+    isolation: isolate;
+}
+
+.loadaudio-dialog {
+    color: var(--lp-text);
+    border: 1px solid rgba(177, 74, 255, 0.34);
+    border-radius: 20px;
+    background:
+        radial-gradient(circle at 88% 5%, rgba(166, 60, 255, 0.13), transparent 30%),
+        linear-gradient(145deg, rgba(14, 10, 26, 0.98), rgba(8, 5, 15, 0.98));
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.62),
+        0 0 0 100vmax rgba(3, 1, 8, 0.76);
+    backdrop-filter: blur(24px) saturate(1.08);
+}
+
+.dialog-close {
+    top: -18px;
+    left: -18px;
+    width: 42px;
+    height: 42px;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--lp-accent), var(--lp-accent-2));
+    box-shadow: 0 12px 30px rgba(62, 27, 102, 0.45);
+}
+
+.dialog-close::before {
+    background: rgba(3, 1, 8, 0.18);
+    backdrop-filter: blur(5px);
+}
+
+.dialog-close > svg {
+    width: 28px;
+    height: 28px;
+}
+
+.loadaudio-body {
+    padding: 10px 12px 14px;
+}
+
+.loadaudio-tab > label {
+    color: var(--lp-muted);
+    border-bottom-color: rgba(166, 60, 255, 0.34);
+    transition:
+        color 180ms ease,
+        background 180ms ease,
+        border-color 180ms ease;
+}
+
+.loadaudio-tab > label:hover {
+    color: #ffffff;
+    background: rgba(166, 60, 255, 0.07);
+}
+
+.loadaudio-tab :checked ~ label {
+    color: #ffffff;
+    border-color: rgba(166, 60, 255, 0.46);
+    border-bottom-color: transparent;
+    background: linear-gradient(180deg, rgba(166, 60, 255, 0.16), rgba(166, 60, 255, 0.07));
+}
+
+.audio-input-tip,
+.audio-input-form {
+    color: #ded7e9;
+}
+
+.audio-input-tip:hover {
+    color: #ffffff;
+    transform: scale(1.03);
+}
+
+.audio-input-form > input[type="url"] {
+    color: #ffffff;
+    caret-color: var(--lp-accent);
+    border-bottom-color: rgba(166, 60, 255, 0.5);
+}
+
+.audio-input-form > input[type="url"]::placeholder {
+    color: rgba(214, 205, 227, 0.52);
+}
+
+.audio-input-form > input[type="submit"] {
+    padding: 9px 13px;
+    color: #ffffff;
+    border: 1px solid rgba(166, 60, 255, 0.36);
+    border-radius: 10px;
+    background: rgba(166, 60, 255, 0.12);
+}
+
+/* Toasts ----------------------------------------------------------------- */
+.toast-queue {
+    top: 82px;
+    right: 14px;
+    z-index: 1400;
+    max-width: 370px;
+}
+
+.toast {
+    align-items: center;
+    min-height: 54px;
+    margin: 10px 0;
+    overflow: hidden;
+    color: var(--lp-text);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    background:
+        radial-gradient(circle at 90% 10%, rgba(166, 60, 255, 0.1), transparent 34%),
+        linear-gradient(145deg, rgba(20, 14, 36, 0.97), rgba(10, 7, 18, 0.97));
+    box-shadow: 0 18px 52px rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(20px) saturate(1.08);
+}
+
+.toast-badge {
+    width: 28px;
+    height: 28px;
+    margin: 12px;
+}
+
+.toast-text {
+    margin: 12px 14px 12px 0;
+    color: #ece7f4;
+    font-size: 0.9rem;
+    font-weight: 650;
+    line-height: 1.35;
+}
+
+.toast-info {
+    color: #91d2fa;
+}
+
+.toast-success {
+    color: #54e69b;
+}
+
+.toast-warning {
+    color: #ffd07a;
+}
+
+/* Settings --------------------------------------------------------------- */
+.preferences .option-select > select {
+    color: var(--lp-text);
+    background-color: rgba(255, 255, 255, 0.045);
+}
+
+.preferences .option-select > select option {
+    color: #f8f6ff;
+    background: #100a1b;
+}
+
+@media (width <= 768px) {
+    .loadaudio-dialog {
+        width: min(500px, calc(100% - 28px));
+        border-radius: 17px;
+    }
+
+    .toast-queue {
+        top: 70px;
+        right: 8px;
+        left: 8px;
+        width: auto;
+        max-width: none;
+    }
+
+    .toast {
+        margin: 8px 0;
+    }
+}
