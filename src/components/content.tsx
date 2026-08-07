@@ -23,12 +23,6 @@ const LazySynchronizer = lazy(async () =>
     })
 );
 
-const LazyGist = lazy(async () =>
-    import("./gist.js").then(({ Gist }) => {
-        return { default: Gist };
-    })
-);
-
 const LazyPreferences = lazy(async () =>
     import("./preferences.js").then(({ Preferences }) => {
         return { default: Preferences };
@@ -78,7 +72,10 @@ export const Content: React.FC = () => {
             lrcDispatch({
                 type: LrcActionType.getState,
                 payload: (lrc) => {
-                    localStorage.setItem(LSK.lyric, stringify(lrc, prefState));
+                    // SHINOBIWAN fork deliberately persists only timestamped lyric
+                    // content. Legacy [tool:], title/artist/album and duration tags
+                    // are not re-injected into the user's LRC text.
+                    localStorage.setItem(LSK.lyric, stringify({ ...lrc, info: new Map() }, prefState));
                     sessionStorage.setItem(SSK.selectIndex, lrc.selectIndex.toString());
                 },
             });
@@ -171,10 +168,6 @@ export const Content: React.FC = () => {
                     return <AkariNotFound />;
                 }
                 return <LazySynchronizer state={lrcState} dispatch={lrcDispatch} />;
-            }
-
-            case ROUTER.gist: {
-                return <LazyGist lrcDispatch={lrcDispatch} langName={prefState.lang} />;
             }
 
             case ROUTER.preferences: {
