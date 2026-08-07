@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node_version: '20'
+          node-version: '20'
 
       - name: Install & Build
         run: |
@@ -40,7 +40,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist' # Si le build génère 'build', remplace par './build'
+          path: './build'
 
       - name: Deploy to GitHub Pages
         id: deployment
