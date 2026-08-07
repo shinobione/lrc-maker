@@ -1,18 +1,19 @@
 {
     "name": "lrc-maker",
     "version": "6.0.0",
-    "description": "歌词滚动姬｜可能是你所能见到的最好用的歌词制作工具",
-    "repository": "https://github.com/magic-akari/lrc-maker.git",
+    "description": "SHINOBIWAN LRC Maker — éditeur et synchroniseur LRC moderne pour paroles horodatées.",
+    "repository": "https://github.com/shinobione/lrc-maker.git",
     "author": "magic-akari <akari.ccino@gmail.com>",
     "license": "MIT",
     "keywords": [
         "lrc",
         "lrc maker",
         "lyric",
-        "lyric maker"
+        "lyric maker",
+        "shinobiwan"
     ],
-    "bugs": "https://github.com/magic-akari/lrc-maker/issues",
-    "homepage": "https://github.com/magic-akari/lrc-maker#readme",
+    "bugs": "https://github.com/shinobione/lrc-maker/issues",
+    "homepage": "https://shinobione.github.io/lrc-maker/",
     "files": [
         "src",
         "build"

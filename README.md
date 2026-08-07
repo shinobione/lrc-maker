@@ -1,112 +1,58 @@
-<p align="center">
-    <a href="https://lrc-maker.github.io">
-        <img src="./public/favicons/apple-touch-icon.png" alt="logo" />
-    </a>
-</p>
+# SHINOBIWAN LRC Maker
 
-<div align="center">
+Interface web légère pour créer et synchroniser des fichiers **LRC** avec un fichier audio.
 
-[English](./README.md) · [中文](./README-zh.md)
+- Application : https://shinobione.github.io/lrc-maker/
+- Dépôt : https://github.com/shinobione/lrc-maker
+- Issues : https://github.com/shinobione/lrc-maker/issues
 
-</div>
+## Philosophie du fork
 
-# [LRC Maker][lrc maker] &middot; [![Build](https://github.com/magic-akari/lrc-maker/actions/workflows/build.yml/badge.svg)](https://github.com/magic-akari/lrc-maker/actions/workflows/build.yml)
+Cette version conserve le moteur LRC et le workflow de synchronisation qui font la force du projet, tout en simplifiant l'interface pour l'usage SHINOBIWAN :
 
-## What is this
+- édition et synchronisation LRC centrées sur les paroles ;
+- sortie **lyrics-only**, sans bloc de métadonnées ni tag `[tool: ...]` injecté automatiquement ;
+- suppression de l'intégration GitHub Gist de l'interface ;
+- accès direct à l'import, la copie, le téléchargement et LRC Utils ;
+- interface sombre modernisée et responsive ;
+- paramètres présentés en français ;
+- branding et liens projet alignés sur le dépôt `shinobione/lrc-maker`.
 
-This is a tool for creating scrolling lrc files, which refers to text with time tags.
+## Utilisation
 
-## Why lrc-maker
+1. Ouvre l'éditeur et colle ou importe les paroles.
+2. Charge un fichier audio.
+3. Ouvre l'outil de synchronisation.
+4. Utilise `Espace` pour poser les timestamps pendant la lecture.
+5. Reviens dans l'éditeur pour copier ou télécharger le fichier `.lrc`.
 
-I'm not satisfied with the existing tools, they can't be used across platforms. So I have created one by myself.
+## Raccourcis principaux
 
-## How to use
+- `Espace` : insérer le timestamp sur la ligne sélectionnée.
+- `Retour arrière` / `Suppr` : supprimer le timestamp.
+- `Ctrl + Entrée` / `Cmd + Entrée` : lecture / pause.
+- `←` / `A` : reculer de 5 secondes.
+- `→` / `D` : avancer de 5 secondes.
+- `↑` / `W` / `J` : ligne précédente.
+- `↓` / `S` / `K` : ligne suivante.
+- `-` / `+` : ajuster le timestamp sélectionné.
+- `Ctrl + ↑` / `Cmd + ↑` : accélérer la lecture.
+- `Ctrl + ↓` / `Cmd + ↓` : ralentir la lecture.
+- `R` : réinitialiser la vitesse.
 
-Click [lrc-maker][lrc maker] to start. You can add the link to browser bookmark. Drag and drop the file in the page to load it and use the arrow key and space key to insert the timestamp.
-
-Development branch links:
-
-- https://magic-akari.github.io/lrc-maker/
-- https://lrc-maker.vercel.app/
-
-## Hotkeys
-
-|                             key                             |         function         |
-| :---------------------------------------------------------: | :----------------------: |
-|                      <kbd>space</kbd>                       |  insert time stamp tag   |
-|   <kbd>backspace</kbd> / <kbd>delete</kbd> / <kbd>⌫</kbd>   |  remove time stamp tag   |
-| <kbd>ctrl</kbd><kbd>enter↵</kbd> / <kbd>⌘</kbd><kbd>↩</kbd> |       play / pause       |
-|                 <kbd>←</kbd> / <kbd>A</kbd>                 | step backward 5 seconds  |
-|                 <kbd>→</kbd> / <kbd>D</kbd>                 |  step forward 5 seconds  |
-|         <kbd>↑</kbd> / <kbd>W</kbd> / <kbd>J</kbd>          |   select previous line   |
-|         <kbd>↓</kbd> / <kbd>S</kbd> / <kbd>K</kbd>          |     select next line     |
-|                 <kbd>-</kbd> / <kbd>+</kbd>                 | adjust selected time tag |
-|   <kbd>ctrl</kbd><kbd>↑</kbd> / <kbd>⌘</kbd><kbd>↑</kbd>    |  speed up playback rate  |
-|   <kbd>ctrl</kbd><kbd>↓</kbd> / <kbd>⌘</kbd><kbd>↓</kbd>    | speed down playback rate |
-|                        <kbd>R</kbd>                         |   reset playback rate    |
-
-## Compatibility
-
-The most modern browsers are supported. The current version uses a lot of modern browser APIs to improve performance and improve the user experience. This project uses the ES Module to load the script code, which means that the browser version should meet the following requirements.
-
-| browser | version |
-| :------ | :------ |
-| EDGE    | >= 16   |
-| Firefox | >= 60   |
-| Chrome  | >= 61   |
-| Safari  | >= 11   |
-| ios_saf | >= 11   |
-
-<del>
-The current version of Edge should be supported theoretically, but there are unexplained reasons for the code to not run after loading. This problem is left to be observed after the Edge with the V8 kernel is released.
-</del>
-
-Limited support for EDGE browsers.
-
-The browsers which do not have ES Module support will load the fallback script. Note: The fallback is not tested. The old browsers may encounter CSS layout confusion.
-
-Ancient browsers such as IE are no longer supported. If you are an ancient browser user, it is better to use [the old version][version 3.x] of this project.
-
-## Development
-
-If you want to run this project on your computer locally, follow the tips.
+## Développement local
 
 ```bash
-# clone this repo
-git clone https://github.com/magic-akari/lrc-maker.git
-
+git clone https://github.com/shinobione/lrc-maker.git
 cd lrc-maker
-
-# install dependencies
-npm i
-
-# build
-npm run build
-
-# or build with watch mode
+npm install
 npm start
 ```
 
-## Deployment in Production
-
-After building (`npm run build`), the `build` folder is the static website files.
-You can deploy it to any CDN or static file server.
-
-You can also build a docker image using the `Dockerfile` at the root of this repo.
-It runs the build and give you a minimal nginx image.
+Build de production :
 
 ```bash
-# build image
-docker build -t lrc-maker .
-# create a container and serve at port 8080
-docker run -d -p 8080:80 lrc-maker
+npm run build
 ```
 
-## Star this project :star:
-
-If you like give us a star :star: Also share this project to help more people.
-
----
-
-[lrc maker]: https://lrc-maker.github.io
-[version 3.x]: https://lrc-maker.github.io/3.x
+Le projet est distribué sous licence MIT. Voir `LICENSE` pour les mentions de copyright et de licence du projet d'origine.
