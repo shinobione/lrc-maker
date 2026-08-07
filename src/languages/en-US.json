@@ -2,90 +2,90 @@
     "languageName": "English",
     "app": {
         "name": "LRC Maker",
-        "fullname": "Akari's LRC Maker"
+        "fullname": "SHINOBIWAN LRC Maker"
     },
     "header": {
-        "home": "home",
-        "editor": "editor",
-        "synchronizer": "synchronizer",
+        "home": "Accueil",
+        "editor": "Éditeur LRC",
+        "synchronizer": "Synchronisation",
         "gist": "Github Gist",
-        "preferences": "preferences"
+        "preferences": "Paramètres"
     },
     "audio": {
-        "loadAudio": "load audio",
-        "play": "play",
-        "pause": "pause",
-        "replay5s": "replay 5s",
-        "forward5s": "forward 5s",
-        "resetRate": "reset playback rate",
+        "loadAudio": "Charger un audio",
+        "play": "Lecture",
+        "pause": "Pause",
+        "replay5s": "Reculer de 5 s",
+        "forward5s": "Avancer de 5 s",
+        "resetRate": "Réinitialiser la vitesse",
         "error": [
-            "audio error",
-            "audio aborted by user",
-            "audio network error",
-            "audio decoding error",
-            "audio not supported"
+            "Erreur audio",
+            "Audio interrompu par l'utilisateur",
+            "Erreur réseau audio",
+            "Erreur de décodage audio",
+            "Format audio non pris en charge"
         ]
     },
     "loadAudio": {
-        "file": "File",
+        "file": "Fichier",
         "url": "URL",
-        "loadFile": "Click here or drop audio file in this page"
+        "loadFile": "Clique ici ou dépose un fichier audio sur la page"
     },
     "home": {
-        "tips": "Tips",
-        "tipForLyricText": "Navigate to the editor page and paste lyric text.",
-        "tipForUploadAudio": "Click the bottom left button to load audio file.",
-        "tipForSynchronizer": "Navigate to synchronizer page and make your lrc :)",
-        "tipTopLeft": "Click here come back to this page",
-        "tipTopRight": "Click here to navigate to other page",
-        "tipBottomLeft": "load audio here, and control the audio",
-        "tipBottomRight": "change the playback rate here"
+        "tips": "Astuces",
+        "tipForLyricText": "Ouvre l'éditeur et colle les paroles.",
+        "tipForUploadAudio": "Utilise le bouton en bas à gauche pour charger l'audio.",
+        "tipForSynchronizer": "Ouvre la synchronisation pour créer ton fichier LRC.",
+        "tipTopLeft": "Retour à l'accueil",
+        "tipTopRight": "Navigation entre les outils",
+        "tipBottomLeft": "Chargement et contrôle de l'audio",
+        "tipBottomRight": "Réglage de la vitesse de lecture"
     },
     "editor": {
-        "metaInfo": "meta info",
-        "album": "album",
-        "title": "title",
-        "artist": "artist",
-        "uploadText": "upload text",
-        "copyText": "select all and copy",
-        "downloadText": "download",
-        "saveToGist": "save to Github Gist",
-        "saveFileName": "Filename",
-        "utils": "lrc utils"
+        "metaInfo": "Métadonnées",
+        "album": "Album",
+        "title": "Titre",
+        "artist": "Artiste",
+        "uploadText": "Importer un fichier TXT/LRC",
+        "copyText": "Tout sélectionner et copier",
+        "downloadText": "Télécharger le LRC",
+        "saveToGist": "Enregistrer dans Github Gist",
+        "saveFileName": "Nom du fichier",
+        "utils": "Outils LRC"
     },
     "gist": {
-        "newTokenTip": "LRC Maker use Github Token to fetch and store data to Github Gist",
-        "newTokenButton": "Generate a new Github Token",
-        "newGistTip": "Create a new Gist repository or assign an existing Gist id",
-        "newGistRepoButton": "Create a new Gist Repository",
-        "gistIdPlaceholder": "Or assign an existing Gist id",
-        "info": "info",
-        "clearTokenAndGist": "Clear token and Gist id"
+        "newTokenTip": "LRC Maker utilise un token Github pour lire et stocker des données dans Github Gist",
+        "newTokenButton": "Générer un nouveau token Github",
+        "newGistTip": "Créer un nouveau Gist ou renseigner un identifiant Gist existant",
+        "newGistRepoButton": "Créer un nouveau Gist",
+        "gistIdPlaceholder": "Ou renseigner un identifiant Gist existant",
+        "info": "Informations",
+        "clearTokenAndGist": "Effacer le token et l'identifiant Gist"
     },
     "preferences": {
         "version": "Version",
-        "commitHash": "Commit hash",
-        "updateTime": "Update time",
-        "repo": "Repository",
-        "help": "Help & tips",
-        "language": "Language",
-        "builtInAudio": "Use browser built-in audio player",
-        "spaceButton": "On-screen space key",
-        "showWaveform": "Show audio waveform in seek bar",
-        "themeColor": "Theme color",
-        "lrcFormat": "Change output format",
-        "fixed": "Timestamp fixed",
-        "leftSpace": "Left space",
-        "rightSpace": "Right space",
-        "clearCache": "Clear caches",
+        "commitHash": "Commit",
+        "updateTime": "Dernière mise à jour",
+        "repo": "Dépôt du projet",
+        "help": "Aide et documentation",
+        "language": "Langue de l'application",
+        "builtInAudio": "Utiliser le lecteur audio intégré du navigateur",
+        "spaceButton": "Afficher la touche Espace à l'écran",
+        "showWaveform": "Afficher la forme d'onde dans la barre de lecture",
+        "themeColor": "Couleur d'accent",
+        "lrcFormat": "Aperçu du format LRC",
+        "fixed": "Décimales du timestamp",
+        "leftSpace": "Espaces avant les paroles",
+        "rightSpace": "Espaces après les paroles",
+        "clearCache": "Vider le cache de l'application",
         "themeMode": {
-            "label": "Theme Mode",
-            "auto": "auto",
-            "light": "light",
-            "dark": "dark"
+            "label": "Apparence",
+            "auto": "Automatique",
+            "light": "Clair",
+            "dark": "Sombre"
         }
     },
     "notify": {
-        "audioLoaded": "Audio loaded."
+        "audioLoaded": "Audio chargé."
     }
 }
