@@ -5,87 +5,90 @@
         "fullname": "SHINOBIWAN LRC Maker"
     },
     "header": {
-        "home": "Accueil",
-        "editor": "Éditeur LRC",
-        "synchronizer": "Synchronisation",
+        "home": "Home",
+        "editor": "LRC Editor",
+        "synchronizer": "Synchronizer",
         "gist": "Github Gist",
-        "preferences": "Paramètres"
+        "preferences": "Settings"
     },
     "audio": {
-        "loadAudio": "Charger un audio",
-        "play": "Lecture",
+        "loadAudio": "Load audio",
+        "play": "Play",
         "pause": "Pause",
-        "replay5s": "Reculer de 5 s",
-        "forward5s": "Avancer de 5 s",
-        "resetRate": "Réinitialiser la vitesse",
+        "replay5s": "Back 5 seconds",
+        "forward5s": "Forward 5 seconds",
+        "resetRate": "Reset playback speed",
         "error": [
-            "Erreur audio",
-            "Audio interrompu par l'utilisateur",
-            "Erreur réseau audio",
-            "Erreur de décodage audio",
-            "Format audio non pris en charge"
+            "Audio error",
+            "Audio aborted by user",
+            "Audio network error",
+            "Audio decoding error",
+            "Audio format not supported"
         ]
     },
     "loadAudio": {
-        "file": "Fichier",
+        "file": "File",
         "url": "URL",
-        "loadFile": "Clique ici ou dépose un fichier audio sur la page"
+        "loadFile": "Click here or drop an audio file on the page"
     },
     "home": {
-        "tips": "Astuces",
-        "tipForLyricText": "Ouvre l'éditeur et colle les paroles.",
-        "tipForUploadAudio": "Utilise le bouton en bas à gauche pour charger l'audio.",
-        "tipForSynchronizer": "Ouvre la synchronisation pour créer ton fichier LRC.",
-        "tipTopLeft": "Retour à l'accueil",
-        "tipTopRight": "Navigation entre les outils",
-        "tipBottomLeft": "Chargement et contrôle de l'audio",
-        "tipBottomRight": "Réglage de la vitesse de lecture"
+        "tips": "Tips",
+        "tipForLyricText": "Open the editor and paste your lyrics.",
+        "tipForUploadAudio": "Use the bottom-left button to load the audio.",
+        "tipForSynchronizer": "Open the synchronizer to create your LRC file.",
+        "tipTopLeft": "Back to home",
+        "tipTopRight": "Navigate between tools",
+        "tipBottomLeft": "Load and control audio",
+        "tipBottomRight": "Adjust playback speed"
     },
     "editor": {
-        "metaInfo": "Métadonnées",
+        "metaInfo": "Metadata",
         "album": "Album",
-        "title": "Titre",
-        "artist": "Artiste",
-        "uploadText": "Importer un fichier TXT/LRC",
-        "copyText": "Tout sélectionner et copier",
-        "downloadText": "Télécharger le LRC",
-        "saveToGist": "Enregistrer dans Github Gist",
-        "saveFileName": "Nom du fichier",
-        "utils": "Outils LRC"
+        "title": "Title",
+        "artist": "Artist",
+        "uploadText": "Import TXT/LRC file",
+        "copyText": "Select all and copy",
+        "downloadText": "Download LRC",
+        "saveToGist": "Save to Github Gist",
+        "saveFileName": "File name",
+        "utils": "LRC tools",
+        "removeEmptyLines": "Remove empty lines"
     },
     "gist": {
-        "newTokenTip": "LRC Maker utilise un token Github pour lire et stocker des données dans Github Gist",
-        "newTokenButton": "Générer un nouveau token Github",
-        "newGistTip": "Créer un nouveau Gist ou renseigner un identifiant Gist existant",
-        "newGistRepoButton": "Créer un nouveau Gist",
-        "gistIdPlaceholder": "Ou renseigner un identifiant Gist existant",
-        "info": "Informations",
-        "clearTokenAndGist": "Effacer le token et l'identifiant Gist"
+        "newTokenTip": "LRC Maker uses a Github token to read and store data in Github Gist",
+        "newTokenButton": "Generate a new Github token",
+        "newGistTip": "Create a new Gist or enter an existing Gist id",
+        "newGistRepoButton": "Create a new Gist",
+        "gistIdPlaceholder": "Or enter an existing Gist id",
+        "info": "Information",
+        "clearTokenAndGist": "Clear token and Gist id"
     },
     "preferences": {
-        "version": "Version",
-        "commitHash": "Commit",
-        "updateTime": "Dernière mise à jour",
-        "repo": "Dépôt du projet",
-        "help": "Aide et documentation",
-        "language": "Langue de l'application",
-        "builtInAudio": "Utiliser le lecteur audio intégré du navigateur",
-        "spaceButton": "Afficher la touche Espace à l'écran",
-        "showWaveform": "Afficher la forme d'onde dans la barre de lecture",
-        "themeColor": "Couleur d'accent",
-        "lrcFormat": "Aperçu du format LRC",
-        "fixed": "Décimales du timestamp",
-        "leftSpace": "Espaces avant les paroles",
-        "rightSpace": "Espaces après les paroles",
-        "clearCache": "Vider le cache de l'application",
+        "version": "SHINOBIWAN version",
+        "commitHash": "Fork commit",
+        "updateTime": "Last update",
+        "repo": "Project repository",
+        "help": "Help and documentation",
+        "language": "Application language",
+        "builtInAudio": "Use the browser built-in audio player",
+        "spaceButton": "Show on-screen Space key",
+        "showWaveform": "Show waveform in the playback bar",
+        "themeColor": "Accent color",
+        "lrcFormat": "LRC format preview",
+        "fixed": "Timestamp decimals",
+        "leftSpace": "Spaces before lyrics",
+        "rightSpace": "Spaces after lyrics",
+        "clearCache": "Clear application cache",
         "themeMode": {
-            "label": "Apparence",
-            "auto": "Automatique",
-            "light": "Clair",
-            "dark": "Sombre"
+            "label": "Appearance",
+            "auto": "Automatic",
+            "light": "Light",
+            "dark": "Dark"
         }
     },
     "notify": {
-        "audioLoaded": "Audio chargé."
+        "audioLoaded": "Audio loaded.",
+        "emptyLinesRemoved": "Empty lines removed.",
+        "noEmptyLines": "No empty lines to remove."
     }
 }
