@@ -9,12 +9,24 @@ export const Header: React.FC = () => {
 
     return (
         <header className="app-header">
-            <a id={ROUTER.home} className="app-title" title={lang.header.home} href={prependHash(ROUTER.home)}>
-                <span className="app-title-text">{lang.app.name}</span>
-                <span className="app-title-svg">
-                    <HomeSVG />
-                </span>
-            </a>
+            <div className="app-brand-group">
+                <a id={ROUTER.home} className="app-title" title={lang.header.home} href={prependHash(ROUTER.home)}>
+                    <span className="app-title-text">{lang.app.name}</span>
+                    <span className="app-title-svg">
+                        <HomeSVG />
+                    </span>
+                </a>
+                <a
+                    className="shinobiwan-brand"
+                    href="https://shinobione.github.io/LaunchPAD-APP/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Open SHINOBIWAN LaunchPAD"
+                    title="SHINOBIWAN LaunchPAD"
+                >
+                    <img src="./logo.png" alt="SHINOBIWAN" />
+                </a>
+            </div>
             <nav className="app-nav">
                 <a id={ROUTER.editor} className="app-tab" title={lang.header.editor} href={prependHash(ROUTER.editor)}>
                     <EditorSVG />
