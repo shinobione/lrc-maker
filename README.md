@@ -5,7 +5,13 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.1.0**
+- Version du fork : **6.2.0**
+
+## Lyrics Studio (Phase 6)
+
+Le mode autonome reste inchangé. Lorsqu’il est ouvert depuis SHINOBIWAN Studio avec `studio=lyrics-v1`, LRC Maker reçoit uniquement le `trackId` canonique et un chemin de retour interne. Il charge l’audio et `tracks/<slug>/lyrics.txt` via Track Manager, puis valide et sauvegarde exclusivement ce même `lyrics.txt` avec sa révision et son ETag.
+
+Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
 
 ## Philosophie du fork
 

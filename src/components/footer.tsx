@@ -8,12 +8,14 @@ import { getMatchedAction } from "../utils/keybindings.js";
 import { appContext, ChangBits } from "./app.context.js";
 import { LrcAudio } from "./audio.js";
 import { LoadAudio, nec } from "./loadaudio.js";
+import { studioContext } from "./studio.context.js";
 import { toastPubSub } from "./toast.js";
 
 const accept = ["audio/*", ".ncm", ".qmcflac", ".qmc0", ".qmc1", ".qmc2", ".qmc3", "qmcogg"].join(", ");
 
 export const Footer: React.FC = () => {
     const { prefState, lang } = useContext(appContext, ChangBits.lang | ChangBits.builtInAudio);
+    const studio = useContext(studioContext);
     const keyBindings = useKeyBindings();
 
     const [audioSrc, setAudioSrc] = useReducer(
@@ -37,6 +39,10 @@ export const Footer: React.FC = () => {
             return src!;
         },
     );
+
+    useEffect(() => {
+        if (studio.audioUrl) setAudioSrc(studio.audioUrl);
+    }, [studio.audioUrl]);
 
     useEffect(() => {
         function onKeydown(ev: KeyboardEvent) {
@@ -178,6 +184,7 @@ export const Footer: React.FC = () => {
             <audio
                 ref={audioRef}
                 src={audioSrc}
+                crossOrigin={studio.launch ? "use-credentials" : undefined}
                 controls={prefState.builtInAudio}
                 hidden={!prefState.builtInAudio}
                 onLoadedMetadata={onAudioLoadedMetadata}
