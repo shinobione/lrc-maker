@@ -93,6 +93,7 @@ export const Footer: React.FC = () => {
     }, [keyBindings]);
 
     useEffect(() => {
+        if (studio.embedded) return;
         function onDrop(ev: DragEvent) {
             const file = ev.dataTransfer!.files[0];
             receiveFile(file, setAudioSrc);
@@ -101,7 +102,7 @@ export const Footer: React.FC = () => {
         document.documentElement.addEventListener("drop", onDrop);
 
         return () => document.documentElement.removeEventListener("drop", onDrop);
-    }, []);
+    }, [studio.embedded]);
 
     const onAudioInputChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
         const file = ev.target.files![0];
@@ -178,9 +179,13 @@ export const Footer: React.FC = () => {
     );
 
     return (
-        <footer className="app-footer">
-            <input id="audio-input" type="file" accept={accept} hidden={true} onChange={onAudioInputChange} />
-            <LoadAudio setAudioSrc={setAudioSrc} lang={lang} />
+        <footer className={`app-footer${studio.embedded ? " studio-embedded-footer" : ""}`}>
+            {!studio.embedded && (
+                <>
+                    <input id="audio-input" type="file" accept={accept} hidden={true} onChange={onAudioInputChange} />
+                    <LoadAudio setAudioSrc={setAudioSrc} lang={lang} />
+                </>
+            )}
             <audio
                 ref={audioRef}
                 src={audioSrc}
@@ -220,7 +225,6 @@ const receiveFile = (file: File, setAudioSrc: TsetAudioSrc): void => {
                         const musicFile = new Blob([dataArray], {
                             type: detectMimeType(dataArray),
                         });
-
                         setAudioSrc(URL.createObjectURL(musicFile));
                     }
                     if (ev.data.type === "error") {
@@ -246,7 +250,6 @@ const receiveFile = (file: File, setAudioSrc: TsetAudioSrc): void => {
             );
 
             worker.postMessage(file);
-
             return;
         }
         if (/\.qmc(?:flac|0|1|2|3)$/.test(file.name)) {
@@ -259,7 +262,6 @@ const receiveFile = (file: File, setAudioSrc: TsetAudioSrc): void => {
                         const musicFile = new Blob([dataArray], {
                             type: detectMimeType(dataArray),
                         });
-
                         setAudioSrc(URL.createObjectURL(musicFile));
                     }
                 },
@@ -284,20 +286,16 @@ const detectMimeType = (dataArray: Uint8Array) => {
     switch (magicNumber) {
         case MimeType.fLaC:
             return "audio/flac";
-
         case MimeType.OggS:
             return "audio/ogg";
-
         case MimeType.RIFF:
         case MimeType.WAVE:
             return "audio/wav";
-
         default:
             return "audio/mpeg";
     }
 };
 
-// side effect
 document.addEventListener("visibilitychange", () => {
     if (!audioRef.paused) {
         audioRef.toggle();
