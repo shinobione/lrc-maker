@@ -39,6 +39,79 @@ body, .app-container {
     padding-bottom: 32px;
 }
 
+.studio-context {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(220px, 1fr) auto;
+    gap: 16px;
+    align-items: center;
+    margin: 12px 12px 24px;
+    padding: 14px 16px;
+    border: 1px solid rgb(var(--theme-rgb) / 45%);
+    border-radius: 14px;
+    background: rgb(8 6 18 / 92%);
+    box-shadow: 0 12px 35px rgb(0 0 0 / 28%);
+}
+
+.studio-context > div:first-child {
+    display: grid;
+    gap: 3px;
+}
+
+.studio-context span, .studio-context small {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    opacity: 0.72;
+}
+
+.studio-context strong {
+    font-size: 16px;
+}
+
+.studio-context-status {
+    min-width: 0;
+    margin: 0;
+    font-size: 13px;
+}
+
+.studio-context-status.error {
+    color: #ff9ca8;
+}
+
+.studio-context-status.saved {
+    color: #87efc0;
+}
+
+.studio-context-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.studio-context-actions button {
+    min-height: 38px;
+    padding: 8px 12px;
+    color: inherit;
+    font-size: 13px;
+    border: 1px solid rgb(var(--theme-rgb) / 45%);
+    border-radius: 9px;
+    background: rgb(var(--theme-rgb) / 14%);
+}
+
+.studio-context-actions button:disabled {
+    opacity: 0.45;
+}
+
+@media (width <= 800px) {
+    .studio-context {
+        grid-template-columns: 1fr;
+    }
+
+    .studio-context-actions {
+        justify-content: flex-start;
+    }
+}
+
 @media (width <= 1280px) {
     .app-main {
         width: 1024px;

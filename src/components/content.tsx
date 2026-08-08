@@ -3,12 +3,13 @@ import ROUTER from "#const/router.json" assert { type: "json" };
 import SSK from "#const/session_key.json" assert { type: "json" };
 import STRINGS from "#const/strings.json" assert { type: "json" };
 import { convertTimeToTag, stringify } from "@lrc-maker/lrc-parser";
-import { type JSX, lazy, Suspense, useContext, useEffect, useRef, useState } from "react";
+import { type JSX, lazy, Suspense, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { ActionType as LrcActionType, useLrc } from "../hooks/useLrc.js";
 import { ThemeMode } from "../hooks/usePref.js";
 import { AudioActionType, audioStatePubSub } from "../utils/audiomodule.js";
 import { appContext, ChangBits } from "./app.context.js";
 import { Home } from "./home.js";
+import { studioContext } from "./studio.context.js";
 import { AkariNotFound, AkariOdangoLoading } from "./svg.img.js";
 
 const LazyEditor = lazy(async () =>
@@ -33,6 +34,7 @@ export const Content: React.FC = () => {
     const self = useRef(Symbol(Content.name));
 
     const { prefState, trimOptions } = useContext(appContext, ChangBits.prefState);
+    const studio = useContext(studioContext);
 
     const [path, setPath] = useState(location.hash);
     useEffect(() => {
@@ -52,6 +54,19 @@ export const Content: React.FC = () => {
             select: Number.parseInt(sessionStorage.getItem(SSK.selectIndex)!, 10) || 0,
         };
     });
+
+    const loadedStudioRevision = useRef("");
+    useEffect(() => {
+        if (!studio.context) return;
+        const revision = `${studio.context.trackId}:${studio.context.lyrics.etag}`;
+        if (loadedStudioRevision.current === revision) return;
+        loadedStudioRevision.current = revision;
+        lrcDispatch({
+            type: LrcActionType.parse,
+            payload: { text: studio.context.lyrics.text, options: trimOptions },
+        });
+        if (!location.hash || location.hash === "#/") location.hash = ROUTER.editor;
+    }, [lrcDispatch, studio.context, trimOptions]);
 
     useEffect(() => {
         return audioStatePubSub.sub(self.current, (data) => {
@@ -75,7 +90,9 @@ export const Content: React.FC = () => {
                     // SHINOBIWAN fork deliberately persists only timestamped lyric
                     // content. Legacy [tool:], title/artist/album and duration tags
                     // are not re-injected into the user's LRC text.
-                    localStorage.setItem(LSK.lyric, stringify({ ...lrc, info: new Map() }, prefState));
+                    if (!studio.launch) {
+                        localStorage.setItem(LSK.lyric, stringify({ ...lrc, info: new Map() }, prefState));
+                    }
                     sessionStorage.setItem(SSK.selectIndex, lrc.selectIndex.toString());
                 },
             });
@@ -96,7 +113,12 @@ export const Content: React.FC = () => {
             document.removeEventListener("visibilitychange", onVisibilitychange);
             window.removeEventListener("beforeunload", saveState);
         };
-    }, [lrcDispatch, prefState]);
+    }, [lrcDispatch, prefState, studio.launch]);
+
+    const onStudioSave = useCallback(() => {
+        const lyrics = stringify({ ...lrcState, info: new Map() }, prefState);
+        void studio.saveLyrics(lyrics).catch(() => {});
+    }, [lrcState, prefState, studio]);
 
     useEffect(() => {
         function onDrop(ev: DragEvent) {
@@ -180,7 +202,41 @@ export const Content: React.FC = () => {
 
     return (
         <main className="app-main">
-            <Suspense fallback={<AkariOdangoLoading />}>{content}</Suspense>
+            {studio.launch && (
+                <section className="studio-context" aria-live="polite">
+                    <div>
+                        <span>LYRICS STUDIO</span>
+                        <strong>{studio.context?.title || studio.launch.trackId}</strong>
+                        <small>Autorité : tracks/{studio.launch.trackId}/lyrics.txt</small>
+                    </div>
+                    <p className={`studio-context-status ${studio.status}`}>
+                        {studio.message || ({
+                            loading: "Chargement du contexte protégé…",
+                            ready: "Contexte prêt — validez les timestamps avant sauvegarde.",
+                            saving: "Validation et sauvegarde protégée…",
+                            saved: "lyrics.txt synchronisé et relu.",
+                            error: "Le contexte Lyrics requiert votre attention.",
+                            standalone: "",
+                        }[studio.status])}
+                    </p>
+                    <div className="studio-context-actions">
+                        {studio.status === "error" && (
+                            <button type="button" onClick={() => void studio.reload()}>Réessayer</button>
+                        )}
+                        <button
+                            type="button"
+                            onClick={onStudioSave}
+                            disabled={!studio.context || studio.status === "saving"}
+                        >
+                            Sauvegarder lyrics.txt
+                        </button>
+                        <button type="button" onClick={studio.returnToStudio}>Retour Studio</button>
+                    </div>
+                </section>
+            )}
+            {studio.launch && !studio.context
+                ? <AkariOdangoLoading />
+                : <Suspense fallback={<AkariOdangoLoading />}>{content}</Suspense>}
         </main>
     );
 };
