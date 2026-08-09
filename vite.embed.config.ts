@@ -22,6 +22,7 @@ export default defineConfig({
     base: "./",
     json: { namedExports: false },
     define: {
+        "process.env.NODE_ENV": JSON.stringify("production"),
         "import.meta.env.app": JSON.stringify({ hash, updateTime, version: pkg.version }),
         "i18n.langCodeList": JSON.stringify(langFiles.map((filename) => filename.slice(0, -5))),
         "i18n.langMap": JSON.stringify(langMap),
