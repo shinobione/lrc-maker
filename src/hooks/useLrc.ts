@@ -3,6 +3,8 @@ import { parser } from "@lrc-maker/lrc-parser";
 import { useReducer } from "react";
 import { guard, timestampSelectedLine, timestampSelectedLineAndAdvance } from "./lrc-transitions";
 
+export { guard } from "./lrc-transitions";
+
 type InitArgs = Readonly<{
     text: string;
     options: TrimOptios;
