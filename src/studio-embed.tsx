@@ -1,25 +1,24 @@
 import { stringify } from "@lrc-maker/lrc-parser";
 import React, { useCallback, useContext, useEffect, useMemo, useRef } from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import { ActionType as LrcActionType, useLrc } from "./hooks/useLrc.js";
-import { AppProvider, appContext } from "./components/app.context.js";
-import { Footer } from "./components/footer.js";
-import { StudioProvider, studioContext, type StudioSavedDetail } from "./components/studio.context.js";
-import { Synchronizer } from "./components/synchronizer.js";
-import { Toast } from "./components/toast.js";
-
-import variablesCss from "./variables.css?inline";
+import animationCss from "./animation.css?inline";
+import { appContext, AppProvider } from "./components/app.context.js";
 import appCss from "./components/app.css?inline";
-import footerCss from "./components/footer.css?inline";
-import synchronizerCss from "./components/synchronizer.css?inline";
 import asideCss from "./components/asidepanel.css?inline";
 import audioCss from "./components/audio.css?inline";
+import { Footer } from "./components/footer.js";
+import footerCss from "./components/footer.css?inline";
+import { studioContext, StudioProvider, type StudioSavedDetail } from "./components/studio.context.js";
+import { Synchronizer } from "./components/synchronizer.js";
+import synchronizerCss from "./components/synchronizer.css?inline";
+import { Toast } from "./components/toast.js";
 import toastCss from "./components/toast.css?inline";
-import animationCss from "./animation.css?inline";
-import themeCss from "./shinobiwan-theme.css?inline";
+import { ActionType as LrcActionType, useLrc } from "./hooks/useLrc.js";
 import skinCss from "./launchpad-skin.css?inline";
 import polishCss from "./shinobiwan-polish.css?inline";
+import themeCss from "./shinobiwan-theme.css?inline";
 import embedCss from "./studio-embed.css?inline";
+import variablesCss from "./variables.css?inline";
 
 const TRACK_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,119}$/;
 const TAG_NAME = "shinobiwan-lyrics-studio";
@@ -65,14 +64,15 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
         void studio.saveLyrics(lyrics).catch(() => {});
     }, [lrcState, prefState, studio]);
 
-    const statusText = useMemo(() => studio.message || ({
-        standalone: "",
-        loading: "Chargement du contexte protégé…",
-        ready: "Contexte prêt — synchronisez directement dans Studio.",
-        saving: "Validation et sauvegarde protégée…",
-        saved: "lyrics.txt synchronisé et relu.",
-        error: "Le contexte Lyrics requiert votre attention.",
-    }[studio.status]), [studio.message, studio.status]);
+    const statusText = useMemo(() =>
+        studio.message || ({
+            standalone: "",
+            loading: "Chargement du contexte protégé…",
+            ready: "Contexte prêt — synchronisez directement dans Studio.",
+            saving: "Validation et sauvegarde protégée…",
+            saved: "lyrics.txt synchronisé et relu.",
+            error: "Le contexte Lyrics requiert votre attention.",
+        }[studio.status]), [studio.message, studio.status]);
 
     return (
         <div className="studio-embed-shell" data-track-id={trackId}>
@@ -110,7 +110,9 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
     );
 };
 
-const EmbeddedApp: React.FC<{ trackId: string; onSaved: (detail: StudioSavedDetail) => void }> = ({ trackId, onSaved }) => {
+const EmbeddedApp: React.FC<{ trackId: string; onSaved: (detail: StudioSavedDetail) => void }> = (
+    { trackId, onSaved },
+) => {
     const launch = useMemo(() => ({ trackId, returnPath: null }), [trackId]);
     return (
         <AppProvider embedded={true}>
@@ -160,11 +162,14 @@ class ShinoBiWanLyricsStudioElement extends HTMLElement {
         render(
             <EmbeddedApp
                 trackId={trackId}
-                onSaved={(detail) => this.dispatchEvent(new CustomEvent<StudioSavedDetail>("lyrics-saved", {
-                    detail,
-                    bubbles: true,
-                    composed: true,
-                }))}
+                onSaved={(detail) =>
+                    this.dispatchEvent(
+                        new CustomEvent<StudioSavedDetail>("lyrics-saved", {
+                            detail,
+                            bubbles: true,
+                            composed: true,
+                        }),
+                    )}
             />,
             this.#mount,
         );
