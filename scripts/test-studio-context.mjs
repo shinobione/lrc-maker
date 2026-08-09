@@ -95,7 +95,7 @@ for (
         "lang.editor.removeEmptyLines",
         "removeNonTimestampBracketTags",
         "removeEmptyLyricLines",
-        "Clic sur une ligne timestampée",
+        "Simple clic = sélectionner · double-clic = revenir au timestamp · Espace = timestamp + ligne suivante.",
     ]
 ) assert.ok(embed.includes(required), `Embedded LRC engine contract missing ${required}.`);
 
@@ -114,12 +114,20 @@ assert.ok(
 
 for (
     const required of [
-        "target.closest<HTMLElement>(\".line\")",
-        "const seekTime = lyric[lineKey]?.time",
-        "audioRef.currentTime = boundedTime",
-        "currentTimePubSub.pub(boundedTime)",
+        "dispatch({ type: ActionType.select, payload: () => lineKey })",
+        "onDoubleClickCapture={onLineDoubleClick}",
+        "adjust(ev, 0, key)",
+        "type: ActionType.next",
+        "payload: audioRef.currentTime",
     ]
-) assert.ok(synchronizer.includes(required), `Timestamp click-to-seek contract missing ${required}.`);
+) assert.ok(synchronizer.includes(required), `Native synchronization flow missing ${required}.`);
+
+for (const forbidden of ["const seekTime = lyric[lineKey]?.time", "audioRef.currentTime = boundedTime"]) {
+    assert.ok(
+        !synchronizer.includes(forbidden),
+        `Single-click selection must not directly seek audio; forbidden contract found ${forbidden}.`,
+    );
+}
 
 assert.ok(embedConfig.includes("outDir: \"build/embed\""), "Embed bundle must be emitted under build/embed.");
 assert.ok(
@@ -133,5 +141,5 @@ const tinyFonts = [...`${css}\n${embedCss}`.matchAll(/font-size:\s*(\d+(?:\.\d+)
 assert.deepEqual(tinyFonts, [], `Studio context UI must not introduce text below 11px; found ${tinyFonts.join(", ")}.`);
 
 console.log(
-    "LRC Maker Studio context passed: canonical load/save, normalized reread equality, embedded cleanup parity, timestamp click-to-seek, shadow isolation and readable UI.",
+    "LRC Maker Studio context passed: canonical load/save, normalized reread equality, embedded cleanup parity, native click/double-click/space sync flow, shadow isolation and readable UI.",
 );
