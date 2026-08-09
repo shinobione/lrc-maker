@@ -1,6 +1,9 @@
 import type { State as LrcState, TrimOptios } from "@lrc-maker/lrc-parser";
 import { parser } from "@lrc-maker/lrc-parser";
 import { useReducer } from "react";
+import { guard, timestampSelectedLine, timestampSelectedLineAndAdvance } from "./lrc-transitions";
+
+export { guard } from "./lrc-transitions";
 
 type InitArgs = Readonly<{
     text: string;
@@ -42,16 +45,6 @@ export type Action = Map$Type$Payload<
     },
     ActionType
 >;
-
-export const guard = (value: number, min: number, max: number): number => {
-    if (value < min) {
-        return min;
-    }
-    if (value > max) {
-        return max;
-    }
-    return value;
-};
 
 const mergeObject = <T extends O, O>(target: T, obj: O): T => {
     for (const i in obj) {
@@ -103,35 +96,11 @@ const reducer = (state: IState, action: Action): IState => {
             return mergeObject(state, record);
         }
 
-        case ActionType.next: {
-            const index = state.selectIndex;
+        case ActionType.next:
+            return timestampSelectedLineAndAdvance(state, action.payload);
 
-            const lyric = state.lyric;
-
-            const selectIndex = guard(index + 1, 0, lyric.length - 1);
-
-            return {
-                ...reducer(state, {
-                    type: ActionType.time,
-                    payload: action.payload,
-                }),
-                selectIndex,
-            };
-        }
-
-        case ActionType.time: {
-            const time = action.payload;
-            const index = state.selectIndex;
-
-            let lyric = state.lyric;
-            if (lyric[index].time !== time) {
-                const newLyric = lyric.slice();
-                newLyric[index] = { text: lyric[index].text, time };
-                lyric = newLyric;
-            }
-
-            return { ...state, lyric, currentTime: time, nextTime: -Infinity };
-        }
+        case ActionType.time:
+            return timestampSelectedLine(state, action.payload);
 
         case ActionType.info: {
             const { name, value } = action.payload;

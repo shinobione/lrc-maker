@@ -125,12 +125,26 @@ for (
     ]
 ) assert.ok(synchronizer.includes(required), `Native synchronization flow missing ${required}.`);
 
-for (const forbidden of ["const seekTime = lyric[lineKey]?.time", "audioRef.currentTime = boundedTime"]) {
-    assert.ok(
-        !synchronizer.includes(forbidden),
-        `Single-click selection must not directly seek audio; forbidden contract found ${forbidden}.`,
-    );
+const singleClickStart = synchronizer.indexOf("const onLineClick = useCallback(");
+const doubleClickStart = synchronizer.indexOf("const onLineDoubleClick = useCallback(");
+const lyricIteratorStart = synchronizer.indexOf("const LyricLineIter = useCallback(");
+assert.ok(
+    singleClickStart >= 0 && doubleClickStart > singleClickStart,
+    "Simple-click handler must remain identifiable.",
+);
+assert.ok(lyricIteratorStart > doubleClickStart, "Double-click handler must remain identifiable.");
+
+const singleClickHandler = synchronizer.slice(singleClickStart, doubleClickStart);
+const doubleClickHandler = synchronizer.slice(doubleClickStart, lyricIteratorStart);
+
+assert.ok(
+    singleClickHandler.includes("dispatch({ type: ActionType.select, payload: () => lineKey })"),
+    "Simple click must select the clicked lyric line.",
+);
+for (const forbidden of ["adjust(", "audioRef.currentTime =", "const seekTime ="]) {
+    assert.ok(!singleClickHandler.includes(forbidden), `Simple click must not seek audio: ${forbidden}`);
 }
+assert.ok(doubleClickHandler.includes("adjust(ev, 0, key)"), "Double-click must remain the explicit seek path.");
 
 assert.ok(embedConfig.includes("outDir: \"build/embed\""), "Embed bundle must be emitted under build/embed.");
 assert.ok(
@@ -144,5 +158,5 @@ const tinyFonts = [...`${css}\n${embedCss}`.matchAll(/font-size:\s*(\d+(?:\.\d+)
 assert.deepEqual(tinyFonts, [], `Studio context UI must not introduce text below 11px; found ${tinyFonts.join(", ")}.`);
 
 console.log(
-    "LRC Maker Studio context passed: canonical load/save, normalized reread equality, embedded cleanup parity, native click/double-click/space sync flow, shadow isolation and readable UI.",
+    "LRC Maker Studio context passed: canonical load/save, normalized reread equality, embedded cleanup parity, isolated simple-click/double-click contracts, shadow isolation and readable UI.",
 );

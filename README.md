@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.4**
+- Version du fork : **6.3.5**
 
 ## Lyrics Studio (Phase 6)
 
@@ -21,6 +21,14 @@ Dans les deux modes Studio, seul le `trackId` canonique est nécessaire. Le mote
 Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
+
+### 6.3.5 — post-Phase-6 reducer hardening
+
+Cette version ne change pas le workflow utilisateur validé en 6.3.4. Elle rend la règle critique **Espace = timestamp de la ligne sélectionnée, puis sélection de la ligne suivante** testable comme transition réelle du reducer au lieu de la protéger uniquement avec des recherches de chaînes dans le source.
+
+Le reducer utilise désormais deux transitions pures partagées : une pour timestamp-er la ligne sélectionnée, une pour timestamp-er puis avancer exactement de `N` vers `N+1`. Un test comportemental compile et exécute réellement ces transitions, vérifie l’absence de mutation de l’état précédent, protège la ligne du dessus et la ligne suivante, et vérifie le clamp sur la dernière ligne.
+
+Le garde Studio existant reste également actif pour la séparation souris : **simple clic = sélection uniquement**, **double-clic = retour au timestamp**. Aucun seek au simple clic n’est réintroduit. Le parser, le format LRC, la sauvegarde canonique `lyrics.txt`, Track Manager, R2 et l’embed Studio restent inchangés.
 
 ### 6.3.4 — native synchronization flow restore hotfix
 
