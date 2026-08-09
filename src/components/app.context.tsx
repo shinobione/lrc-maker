@@ -15,18 +15,13 @@ interface IAppContext {
 
 const enum Bits {
     lang,
-    // lrcFormat,
     builtInAudio,
-    // screenButton,
-    // themeColor,
     prefState,
 }
 
 export const enum ChangBits {
     lang = 1 << Bits.lang,
-    // lrcFormat = 1 << Bits.lrcFormat,
     builtInAudio = 1 << Bits.builtInAudio,
-    // screenButton = 1 << Bits.screenButton,
     prefState = 1 << Bits.prefState,
 }
 
@@ -48,7 +43,9 @@ export const appContext = createContext<IAppContext>(undefined, (prev, next) => 
     return bits;
 });
 
-export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppProvider: React.FC<{ children: React.ReactNode; embedded?: boolean }> = (
+    { children, embedded = false },
+) => {
     const [prefState, prefDispatch] = usePref(() => localStorage.getItem(LSK.preferences) || STRINGS.emptyString);
 
     const [lang, setLang] = useLang();
@@ -63,9 +60,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, [prefState.lang, setLang]);
 
     useEffect(() => {
+        if (embedded) return;
         document.title = "SHINOBIWAN LRC Maker";
         document.documentElement.lang = prefState.lang;
-    }, [lang, prefState, prefState.lang]);
+    }, [embedded, lang, prefState, prefState.lang]);
 
     const value = useMemo(() => {
         return {

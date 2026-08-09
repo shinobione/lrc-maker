@@ -1,0 +1,338 @@
+:host {
+    --white: #e8fbf8;
+    --black: #071013;
+    --theme-rgb: 82, 227, 214;
+    --theme-color: rgb(var(--theme-rgb));
+    --theme-contrast-color: #041011;
+    --theme-secondary-color: #7edfd7;
+    --theme-cyan: #52e3d6;
+    --font-color: #d8eceb;
+    --muted-font-color: #6f878b;
+    --background-color: #081115;
+    --semi-black-color: #081014f4;
+    --panel-color: #0a1519eb;
+    --panel-color-strong: #071014f7;
+    --line-color: rgba(133, 231, 226, 0.11);
+    --border-radius: 12px;
+    --text-shadow: 0 0 14px rgba(82, 227, 214, 0.16);
+    --drop-shadow: drop-shadow(0 0 8px rgba(82, 227, 214, 0.28));
+    --panel-shadow: 0 18px 55px rgba(0, 0, 0, 0.28);
+    --transition-duration: 180ms;
+    --animation-duration: 220ms;
+    --animation-durationx2: 420ms;
+    --animation-out-back: cubic-bezier(0.18, 0.89, 0.32, 1.28);
+
+    display: block;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    min-height: 620px;
+    overflow: hidden;
+    color: var(--font-color);
+    color-scheme: dark;
+    font-family: Inter, Manrope, "Segoe UI", system-ui, sans-serif;
+    background:
+        radial-gradient(circle at 12% 0%, rgba(82, 227, 214, 0.045), transparent 36%),
+        #071014;
+    border-radius: 13px;
+}
+
+:host *, :host *::before, :host *::after {
+    box-sizing: border-box;
+}
+
+button, input, textarea {
+    font: inherit;
+}
+
+button {
+    color: inherit;
+}
+
+.studio-embed-root,
+.studio-embed-shell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+}
+
+.studio-embed-shell {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    overflow: hidden;
+}
+
+.studio-embed-head {
+    z-index: 8;
+    display: grid;
+    grid-template-columns: minmax(180px, 0.9fr) minmax(220px, 1.1fr) auto;
+    gap: 16px;
+    align-items: center;
+    min-height: 88px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(133, 231, 226, 0.09);
+    background: rgba(5, 12, 15, 0.92);
+    backdrop-filter: blur(18px);
+}
+
+.studio-embed-head > div:first-child {
+    min-width: 0;
+}
+
+.studio-embed-head span,
+.studio-embed-head small {
+    display: block;
+    color: #60787c;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.studio-embed-head span {
+    color: #55cfc5;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+}
+
+.studio-embed-head strong {
+    display: block;
+    margin: 3px 0;
+    overflow: hidden;
+    color: #e3f5f3;
+    font-size: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.studio-embed-status {
+    color: #82989b;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.studio-embed-status.saved {
+    color: #82ddb0;
+}
+
+.studio-embed-status.error {
+    color: #e58f9e;
+}
+
+.studio-embed-status.saving {
+    color: #d7bc7b;
+}
+
+.studio-embed-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.studio-embed-actions button {
+    min-height: 34px;
+    padding: 0 12px;
+    color: #a9c0c1;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.018);
+    border: 1px solid rgba(133, 231, 226, 0.14);
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.studio-embed-actions button:hover {
+    color: #d9efed;
+    border-color: rgba(82, 227, 214, 0.3);
+}
+
+.studio-embed-actions .studio-embed-save {
+    color: #061113;
+    background: linear-gradient(135deg, #66e7dc, #43bfb6);
+    border-color: rgba(82, 227, 214, 0.6);
+}
+
+.studio-embed-actions button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.studio-embed-main {
+    position: relative;
+    min-height: 0;
+    padding: 12px 58px 58px 12px;
+    overflow: auto;
+    scrollbar-color: rgba(82, 227, 214, 0.24) transparent;
+    scrollbar-width: thin;
+    overscroll-behavior: contain;
+}
+
+.studio-embed-loading {
+    display: grid;
+    place-items: center;
+    min-height: 360px;
+    color: #728b8f;
+    font-size: 12px;
+}
+
+.lyric-list {
+    min-height: 100%;
+}
+
+.line {
+    min-height: 44px;
+    padding: 10px 12px 10px 112px;
+    color: #aebfc1;
+    font-size: 14px !important;
+    line-height: 1.45;
+    border-width: 1px;
+    border-radius: 7px;
+}
+
+.line:nth-child(even) {
+    background: rgba(255, 255, 255, 0.014);
+}
+
+.line:nth-child(odd) {
+    background: rgba(82, 227, 214, 0.012);
+}
+
+.line.select {
+    color: #e8fbf8;
+    background: rgba(82, 227, 214, 0.055);
+    border-color: rgba(82, 227, 214, 0.62);
+}
+
+.line.highlight {
+    color: #031011;
+    background: #62ddd2;
+}
+
+.line-time {
+    color: #62928f;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.line.select .line-time, .line.highlight .line-time {
+    color: inherit;
+}
+
+.curser {
+    left: 8px;
+}
+
+.aside-panel {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 54px !important;
+    z-index: 20;
+    background: #081115f5;
+    border: 1px solid rgba(133, 231, 226, 0.12);
+    border-right: 0;
+}
+
+.aside-button {
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+}
+
+.aside-button > svg {
+    width: 24px;
+    height: 24px;
+}
+
+.space-button {
+    position: absolute !important;
+    right: 18px !important;
+    bottom: 62px !important;
+    z-index: 18;
+    width: 68px !important;
+    height: 68px !important;
+    background: linear-gradient(145deg, #5fe3d8, #4b78ff) !important;
+    box-shadow: 0 14px 38px rgba(50, 118, 255, 0.22) !important;
+}
+
+.app-footer,
+.studio-embedded-footer {
+    position: relative !important;
+    bottom: auto !important;
+    z-index: 12;
+    width: 100% !important;
+    background: #061014f6;
+    border-top: 1px solid rgba(133, 231, 226, 0.1);
+}
+
+.lrc-audio {
+    min-height: 46px;
+    padding: 5px 8px;
+    font-size: 12px;
+    background: transparent;
+}
+
+.lrc-audio > button {
+    height: 34px;
+}
+
+.loadaudio-button {
+    display: none !important;
+}
+
+.timeline-slider {
+    min-width: 120px;
+}
+
+.playbackrate-slider {
+    max-width: 110px;
+}
+
+.toast {
+    font-size: 12px !important;
+}
+
+.akari-odango-loading {
+    position: absolute !important;
+    width: 90px !important;
+    height: 90px !important;
+}
+
+@media (max-width: 900px) {
+    :host {
+        min-height: 700px;
+    }
+
+    .studio-embed-head {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .studio-embed-actions {
+        justify-content: flex-start;
+    }
+
+    .studio-embed-main {
+        padding-right: 46px;
+    }
+}
+
+@media (max-width: 620px) {
+    :host {
+        min-height: 760px;
+        border-radius: 10px;
+    }
+
+    .line {
+        padding-left: 90px;
+        font-size: 13px !important;
+    }
+
+    .line-time {
+        font-size: 11px;
+    }
+
+    .space-button {
+        width: 58px !important;
+        height: 58px !important;
+    }
+}
