@@ -86,6 +86,9 @@ const parseLaunch = (): StudioLaunch | null => {
 const initialLaunch = parseLaunch();
 const noopAsync = async (): Promise<void> => {};
 
+export const canonicalizeLyricsText = (text: string): string =>
+    String(text ?? "").replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
+
 export const studioContext = createContext<StudioState>({
     launch: null,
     context: null,
@@ -152,9 +155,10 @@ export const StudioProvider: React.FC<React.PropsWithChildren<StudioProviderProp
         if (!activeLaunch || !context) throw new Error("Contexte Lyrics indisponible.");
         setStatus("saving");
         setMessage("");
+        const expectedCanonicalLyrics = canonicalizeLyricsText(lyrics);
         const common = {
             trackId: activeLaunch.trackId,
-            lyrics,
+            lyrics: expectedCanonicalLyrics,
             expectedUpdatedAt: context.lyrics.updatedAt,
             expectedLyricsEtag: context.lyrics.etag,
         };
@@ -186,7 +190,10 @@ export const StudioProvider: React.FC<React.PropsWithChildren<StudioProviderProp
                 { credentials: "include", headers: { Accept: "application/json" } },
             );
             const refreshed = await readJson<LyricsContextPayload>(refreshedResponse);
-            if (refreshed.trackId !== activeLaunch.trackId || refreshed.lyrics.text !== lyrics) {
+            if (
+                refreshed.trackId !== activeLaunch.trackId
+                || canonicalizeLyricsText(refreshed.lyrics.text) !== expectedCanonicalLyrics
+            ) {
                 throw new Error("La relecture canonique ne correspond pas aux paroles sauvegardées.");
             }
             setContext(refreshed);
