@@ -43,7 +43,9 @@ export const appContext = createContext<IAppContext>(undefined, (prev, next) => 
     return bits;
 });
 
-export const AppProvider: React.FC<{ children: React.ReactNode; embedded?: boolean }> = ({ children, embedded = false }) => {
+export const AppProvider: React.FC<{ children: React.ReactNode; embedded?: boolean }> = (
+    { children, embedded = false },
+) => {
     const [prefState, prefDispatch] = usePref(() => localStorage.getItem(LSK.preferences) || STRINGS.emptyString);
 
     const [lang, setLang] = useLang();
