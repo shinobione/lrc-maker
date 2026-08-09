@@ -176,38 +176,47 @@ export const Synchronizer: React.FC<ISynchronizerProps> = ({ state, dispatch }) 
         };
     }, [adjust, dispatch, keyBindings, selectIndex, sync]);
 
+    const findLineElement = useCallback((target: EventTarget | null): HTMLElement | null => {
+        if (!(target instanceof HTMLElement)) return null;
+        const line = target.closest<HTMLElement>(".line");
+        return line && ul.current?.contains(line) ? line : null;
+    }, []);
+
     const onLineClick = useCallback(
-        (ev: React.MouseEvent<HTMLUListElement & HTMLLIElement>) => {
+        (ev: React.MouseEvent<HTMLUListElement>) => {
             ev.stopPropagation();
 
-            const target = ev.target as HTMLElement;
+            const line = findLineElement(ev.target);
+            if (!line) return;
 
-            if (target.classList.contains("line")) {
-                const lineKey = Number.parseInt(target.dataset.key!, 10) || 0;
+            const lineKey = Number.parseInt(line.dataset.key || "0", 10) || 0;
+            dispatch({ type: ActionType.select, payload: () => lineKey });
 
-                dispatch({ type: ActionType.select, payload: () => lineKey });
-            }
+            const seekTime = lyric[lineKey]?.time;
+            if (!audioRef.duration || seekTime === undefined || !Number.isFinite(seekTime)) return;
+
+            const boundedTime = Math.max(0, Math.min(seekTime, audioRef.duration));
+            audioRef.currentTime = boundedTime;
+            currentTimePubSub.pub(boundedTime);
         },
-        [dispatch],
+        [dispatch, findLineElement, lyric],
     );
 
     const onLineDoubleClick = useCallback(
-        (ev: React.MouseEvent<HTMLUListElement | HTMLLIElement>) => {
+        (ev: React.MouseEvent<HTMLUListElement>) => {
             ev.stopPropagation();
 
             if (!audioRef.duration) {
                 return;
             }
 
-            const target = ev.target as HTMLElement;
+            const line = findLineElement(ev.target);
+            if (!line) return;
 
-            if (target.classList.contains("line")) {
-                const key = Number.parseInt(target.dataset.key!, 10);
-
-                adjust(ev, 0, key);
-            }
+            const key = Number.parseInt(line.dataset.key || "0", 10) || 0;
+            adjust(ev, 0, key);
         },
-        [adjust],
+        [adjust, findLineElement],
     );
 
     const LyricLineIter = useCallback(
