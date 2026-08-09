@@ -139,7 +139,7 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
                 <button type="button" onClick={removeEmptyLines} disabled={!studio.context}>
                     {lang.editor.removeEmptyLines}
                 </button>
-                <span>Clic sur une ligne timestampée → aller directement à ce moment de l’audio.</span>
+                <span>Simple clic = sélectionner · double-clic = revenir au timestamp · Espace = timestamp + ligne suivante.</span>
             </div>
 
             <main className="studio-embed-main">
