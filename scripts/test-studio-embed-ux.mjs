@@ -39,7 +39,9 @@ for (
 
 assert.ok(
     skin.includes("background: rgba(166, 60, 255, 0.08) !important")
-        && skin.includes("background: linear-gradient(90deg, rgba(166, 60, 255, 0.62), rgba(92, 108, 255, 0.44)) !important"),
+        && skin.includes(
+            "background: linear-gradient(90deg, rgba(166, 60, 255, 0.62), rgba(92, 108, 255, 0.44)) !important",
+        ),
     "Regression fixture changed: the standalone LaunchPAD skin must still prove why Studio needs authoritative embed overrides.",
 );
 assert.ok(
