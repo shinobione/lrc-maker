@@ -139,7 +139,10 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
                 <button type="button" onClick={removeEmptyLines} disabled={!studio.context}>
                     {lang.editor.removeEmptyLines}
                 </button>
-                <span>Simple clic = sélectionner · double-clic = revenir au timestamp · Espace = timestamp + ligne suivante.</span>
+                <span>
+                    Simple clic = sélectionner · double-clic = revenir au timestamp · Espace = timestamp + ligne
+                    suivante.
+                </span>
             </div>
 
             <main className="studio-embed-main">
