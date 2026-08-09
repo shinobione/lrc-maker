@@ -1,4 +1,5 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from "react";
+import { audioRef } from "../utils/audiomodule.js";
 
 const TRACK_MANAGER_URL = import.meta.env.VITE_TRACK_MANAGER_URL
     || "https://launchpad-r2-api.jerryquinet.workers.dev";
@@ -155,15 +156,20 @@ export const StudioProvider: React.FC<React.PropsWithChildren<StudioProviderProp
         if (!activeLaunch || !context) throw new Error("Contexte Lyrics indisponible.");
         setStatus("saving");
         setMessage("");
-        const expectedCanonicalLyrics = canonicalizeLyricsText(lyrics);
-        const common = {
-            trackId: activeLaunch.trackId,
-            lyrics: expectedCanonicalLyrics,
-            expectedUpdatedAt: context.lyrics.updatedAt,
-            expectedLyricsEtag: context.lyrics.etag,
-        };
-
         try {
+            const expectedCanonicalLyrics = canonicalizeLyricsText(lyrics);
+            const observedAudioDuration = Number(audioRef.duration);
+            if (!Number.isFinite(observedAudioDuration) || observedAudioDuration <= 0) {
+                throw new Error("La durée de l’audio canonique n’est pas encore disponible. Attendez son chargement puis réessayez.");
+            }
+            const common = {
+                trackId: activeLaunch.trackId,
+                lyrics: expectedCanonicalLyrics,
+                expectedUpdatedAt: context.lyrics.updatedAt,
+                expectedLyricsEtag: context.lyrics.etag,
+                observedAudioDuration,
+            };
+
             const post = async (suffix: string, intent: string): Promise<SavePayload> => {
                 const response = await fetch(
                     adminUrl(`/api/studio/tracks/${encodeURIComponent(activeLaunch.trackId)}/lyrics/sync/${suffix}`),

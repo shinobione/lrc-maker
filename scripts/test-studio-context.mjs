@@ -28,6 +28,9 @@ for (
         "\"Content-Type\": \"text/plain;charset=UTF-8\"",
         "expectedUpdatedAt: context.lyrics.updatedAt",
         "expectedLyricsEtag: context.lyrics.etag",
+        "const observedAudioDuration = Number(audioRef.duration)",
+        "Number.isFinite(observedAudioDuration)",
+        "observedAudioDuration,",
         "export const canonicalizeLyricsText",
         "replace(/^\\uFEFF/, \"\")",
         "replace(/\\r\\n?/g, \"\\n\")",
@@ -158,5 +161,5 @@ const tinyFonts = [...`${css}\n${embedCss}`.matchAll(/font-size:\s*(\d+(?:\.\d+)
 assert.deepEqual(tinyFonts, [], `Studio context UI must not introduce text below 11px; found ${tinyFonts.join(", ")}.`);
 
 console.log(
-    "LRC Maker Studio context passed: canonical load/save, normalized reread equality, embedded cleanup parity, isolated simple-click/double-click contracts, shadow isolation and readable UI.",
+    "LRC Maker Studio context passed: canonical load/save, observed canonical-audio duration evidence, normalized reread equality, embedded cleanup parity, isolated simple-click/double-click contracts, shadow isolation and readable UI.",
 );

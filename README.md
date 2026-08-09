@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.5**
+- Version du fork : **6.3.6**
 
 ## Lyrics Studio (Phase 6)
 
@@ -21,6 +21,10 @@ Dans les deux modes Studio, seul le `trackId` canonique est nécessaire. Le mote
 Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
+
+### 6.3.6 — PHASE UX canonical duration evidence
+
+Le contexte Studio transmet désormais la durée finie et positive observée sur l’audio canonique protégé avec les requêtes existantes `lyrics/sync/validate` et `lyrics/sync/save`. Cette preuve évite qu’une durée de manifest périmée rejette des timestamps pourtant contenus dans l’audio réellement chargé. Aucun nouvel endpoint, champ persistant, seek au simple clic, stockage audio ou comportement standalone n’est ajouté.
 
 ### 6.3.5 — post-Phase-6 reducer hardening
 
