@@ -145,6 +145,8 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
                 </span>
             </div>
 
+            <Toast />
+
             <main className="studio-embed-main">
                 {!studio.context
                     ? <div className="studio-embed-loading">{statusText || "Chargement…"}</div>
@@ -152,7 +154,6 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
             </main>
 
             <Footer />
-            <Toast />
         </div>
     );
 };
