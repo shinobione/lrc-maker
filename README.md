@@ -26,6 +26,12 @@ Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio
 
 Le contexte Studio transmet désormais la durée finie et positive observée sur l’audio canonique protégé avec les requêtes existantes `lyrics/sync/validate` et `lyrics/sync/save`. Cette preuve évite qu’une durée de manifest périmée rejette des timestamps pourtant contenus dans l’audio réellement chargé. Aucun nouvel endpoint, champ persistant, seek au simple clic, stockage audio ou comportement standalone n’est ajouté.
 
+#### C2 production validation
+
+L’intégration `6.3.6` est active avec Track Manager `v5.16` / Studio bridge `v1.8`. Le smoke test réel utilisateur a validé la lecture de l’audio canonique, la navigation ligne/timestamp, la sauvegarde synchronisée de `tracks/<slug>/lyrics.txt` et sa relecture canonique. Le faux blocage « last timestamp exceeds audio duration » a disparu.
+
+La durée observée reste une preuve de validation limitée à la requête et ne devient pas une seconde donnée persistante. `lyrics.txt` reste l’unique source canonique des paroles ; `.lrc` reste un export de compatibilité optionnel. Le déploiement C2 a ciblé uniquement le Worker admin, n’a pas modifié le Worker public et n’a pas effectué de mutation R2 automatisée pour les tests. Le checkpoint PHASE UX final n’est pas créé et la Phase 7 n’est pas commencée.
+
 ### 6.3.5 — post-Phase-6 reducer hardening
 
 Cette version ne change pas le workflow utilisateur validé en 6.3.4. Elle rend la règle critique **Espace = timestamp de la ligne sélectionnée, puis sélection de la ligne suivante** testable comme transition réelle du reducer au lieu de la protéger uniquement avec des recherches de chaînes dans le source.
