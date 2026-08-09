@@ -12,12 +12,13 @@ import { studioContext, StudioProvider, type StudioSavedDetail } from "./compone
 import synchronizerCss from "./components/synchronizer.css?inline";
 import { Synchronizer } from "./components/synchronizer.js";
 import toastCss from "./components/toast.css?inline";
-import { Toast } from "./components/toast.js";
+import { Toast, toastPubSub } from "./components/toast.js";
 import { ActionType as LrcActionType, useLrc } from "./hooks/useLrc.js";
 import skinCss from "./launchpad-skin.css?inline";
 import polishCss from "./shinobiwan-polish.css?inline";
 import themeCss from "./shinobiwan-theme.css?inline";
 import embedCss from "./studio-embed.css?inline";
+import { removeEmptyLyricLines, removeNonTimestampBracketTags } from "./utils/lyrics-cleanup.js";
 import variablesCss from "./variables.css?inline";
 
 const TRACK_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,119}$/;
@@ -43,7 +44,7 @@ interface EmbeddedSessionProps {
 }
 
 const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
-    const { prefState, trimOptions } = useContext(appContext);
+    const { prefState, trimOptions, lang } = useContext(appContext);
     const studio = useContext(studioContext);
     const [lrcState, lrcDispatch] = useLrc(() => ({ text: "", options: trimOptions, select: 0 }));
     const loadedRevision = useRef("");
@@ -59,10 +60,43 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
         });
     }, [lrcDispatch, studio.context, trimOptions]);
 
+    const serializeLyrics = useCallback(
+        () => stringify({ ...lrcState, info: new Map() }, prefState),
+        [lrcState, prefState],
+    );
+
     const save = useCallback(() => {
-        const lyrics = stringify({ ...lrcState, info: new Map() }, prefState);
-        void studio.saveLyrics(lyrics).catch(() => {});
-    }, [lrcState, prefState, studio]);
+        void studio.saveLyrics(serializeLyrics()).catch(() => {});
+    }, [serializeLyrics, studio]);
+
+    const applyCleanup = useCallback(
+        (
+            cleanup: (text: string) => { value: string; removed: number },
+            noChangeMessage: string,
+            changedMessage: string,
+        ) => {
+            const result = cleanup(serializeLyrics());
+            if (result.removed === 0) {
+                toastPubSub.pub({ type: "info", text: noChangeMessage });
+                return;
+            }
+
+            lrcDispatch({
+                type: LrcActionType.parse,
+                payload: { text: result.value, options: trimOptions },
+            });
+            toastPubSub.pub({ type: "success", text: changedMessage });
+        },
+        [lrcDispatch, serializeLyrics, trimOptions],
+    );
+
+    const removeTags = useCallback(() => {
+        applyCleanup(removeNonTimestampBracketTags, lang.notify.noTags, lang.notify.tagsRemoved);
+    }, [applyCleanup, lang.notify.noTags, lang.notify.tagsRemoved]);
+
+    const removeEmptyLines = useCallback(() => {
+        applyCleanup(removeEmptyLyricLines, lang.notify.noEmptyLines, lang.notify.emptyLinesRemoved);
+    }, [applyCleanup, lang.notify.emptyLinesRemoved, lang.notify.noEmptyLines]);
 
     const statusText = useMemo(() =>
         studio.message || ({
@@ -97,6 +131,16 @@ const EmbeddedSession: React.FC<EmbeddedSessionProps> = ({ trackId }) => {
                     </button>
                 </div>
             </header>
+
+            <div className="studio-embed-toolbar" aria-label={lang.editor.utils}>
+                <button type="button" onClick={removeTags} disabled={!studio.context}>
+                    {lang.editor.removeTags}
+                </button>
+                <button type="button" onClick={removeEmptyLines} disabled={!studio.context}>
+                    {lang.editor.removeEmptyLines}
+                </button>
+                <span>Clic sur une ligne timestampée → aller directement à ce moment de l’audio.</span>
+            </div>
 
             <main className="studio-embed-main">
                 {!studio.context

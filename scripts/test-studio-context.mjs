@@ -6,6 +6,9 @@ const context = read("src/components/studio.context.tsx");
 const content = read("src/components/content.tsx");
 const footer = read("src/components/footer.tsx");
 const css = read("src/components/content.css");
+const editor = read("src/components/editor.tsx");
+const synchronizer = read("src/components/synchronizer.tsx");
+const cleanup = read("src/utils/lyrics-cleanup.ts");
 const embed = read("src/studio-embed.tsx");
 const embedCss = read("src/studio-embed.css");
 const embedConfig = read("vite.embed.config.ts");
@@ -61,12 +64,35 @@ for (
         "<StudioProvider launch={launch} embedded={true} onSaved={onSaved}>",
         "new CustomEvent<StudioSavedDetail>(\"lyrics-saved\"",
         "tracks/{trackId}/lyrics.txt",
+        "lang.editor.removeTags",
+        "lang.editor.removeEmptyLines",
+        "removeNonTimestampBracketTags",
+        "removeEmptyLyricLines",
+        "Clic sur une ligne timestampée",
     ]
 ) assert.ok(embed.includes(required), `Embedded LRC engine contract missing ${required}.`);
 
 for (const forbidden of ["<iframe", "lyrics.lrc", "query.get(\"audio\")", "query.get(\"lyrics\")"]) {
     assert.ok(!embed.includes(forbidden), `Embedded LRC engine must not contain ${forbidden}.`);
 }
+
+for (const required of ["removeEmptyLyricLines", "removeNonTimestampBracketTags"]) {
+    assert.ok(editor.includes(required), `Standalone editor must share cleanup utility ${required}.`);
+    assert.ok(cleanup.includes(`export const ${required}`), `Cleanup utility must export ${required}.`);
+}
+assert.ok(
+    cleanup.includes("lrcTimestampPattern.test(content.trim())"),
+    "Tag cleanup must preserve timestamp brackets while removing non-timestamp [tags].",
+);
+
+for (
+    const required of [
+        "target.closest<HTMLElement>(\".line\")",
+        "const seekTime = lyric[lineKey]?.time",
+        "audioRef.currentTime = boundedTime",
+        "currentTimePubSub.pub(boundedTime)",
+    ]
+) assert.ok(synchronizer.includes(required), `Timestamp click-to-seek contract missing ${required}.`);
 
 assert.ok(embedConfig.includes("outDir: \"build/embed\""), "Embed bundle must be emitted under build/embed.");
 assert.ok(
@@ -80,5 +106,5 @@ const tinyFonts = [...`${css}\n${embedCss}`.matchAll(/font-size:\s*(\d+(?:\.\d+)
 assert.deepEqual(tinyFonts, [], `Studio context UI must not introduce text below 11px; found ${tinyFonts.join(", ")}.`);
 
 console.log(
-    "LRC Maker Studio context passed: standalone + embedded engine, protected canonical load/save, shadow isolation and readable UI.",
+    "LRC Maker Studio context passed: canonical load/save, embedded cleanup parity, timestamp click-to-seek, shadow isolation and readable UI.",
 );
