@@ -26,6 +26,9 @@ export default defineConfig({
         "i18n.langCodeList": JSON.stringify(langFiles.map((filename) => filename.slice(0, -5))),
         "i18n.langMap": JSON.stringify(langMap),
     },
+    css: {
+        transformer: "lightningcss",
+    },
     build: {
         minify: true,
         cssMinify: "lightningcss",
