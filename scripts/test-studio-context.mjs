@@ -128,7 +128,10 @@ for (
 const singleClickStart = synchronizer.indexOf("const onLineClick = useCallback(");
 const doubleClickStart = synchronizer.indexOf("const onLineDoubleClick = useCallback(");
 const lyricIteratorStart = synchronizer.indexOf("const LyricLineIter = useCallback(");
-assert.ok(singleClickStart >= 0 && doubleClickStart > singleClickStart, "Simple-click handler must remain identifiable.");
+assert.ok(
+    singleClickStart >= 0 && doubleClickStart > singleClickStart,
+    "Simple-click handler must remain identifiable.",
+);
 assert.ok(lyricIteratorStart > doubleClickStart, "Double-click handler must remain identifiable.");
 
 const singleClickHandler = synchronizer.slice(singleClickStart, doubleClickStart);
