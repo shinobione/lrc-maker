@@ -52,22 +52,27 @@ assert.ok(
 assert.ok(footer.includes("searchParams.get(\"url\")"), "Standalone URL-loading compatibility must be preserved.");
 assert.ok(footer.includes("!studio.embedded"), "Embedded Studio mode must not expose manual audio loading.");
 
-for (const required of [
-    "attachShadow({ mode: \"open\" })",
-    "customElements.define(TAG_NAME",
-    "<Synchronizer state={lrcState} dispatch={lrcDispatch} />",
-    "<Footer />",
-    "<StudioProvider launch={launch} embedded={true} onSaved={onSaved}>",
-    "new CustomEvent<StudioSavedDetail>(\"lyrics-saved\"",
-    "tracks/{trackId}/lyrics.txt",
-]) assert.ok(embed.includes(required), `Embedded LRC engine contract missing ${required}.`);
+for (
+    const required of [
+        "attachShadow({ mode: \"open\" })",
+        "customElements.define(TAG_NAME",
+        "<Synchronizer state={lrcState} dispatch={lrcDispatch} />",
+        "<Footer />",
+        "<StudioProvider launch={launch} embedded={true} onSaved={onSaved}>",
+        "new CustomEvent<StudioSavedDetail>(\"lyrics-saved\"",
+        "tracks/{trackId}/lyrics.txt",
+    ]
+) assert.ok(embed.includes(required), `Embedded LRC engine contract missing ${required}.`);
 
 for (const forbidden of ["<iframe", "lyrics.lrc", "query.get(\"audio\")", "query.get(\"lyrics\")"]) {
     assert.ok(!embed.includes(forbidden), `Embedded LRC engine must not contain ${forbidden}.`);
 }
 
-assert.ok(embedConfig.includes('outDir: "build/embed"'), "Embed bundle must be emitted under build/embed.");
-assert.ok(embedConfig.includes('fileName: () => "lyrics-studio.js"'), "Embed bundle filename must remain stable for Studio lazy loading.");
+assert.ok(embedConfig.includes("outDir: \"build/embed\""), "Embed bundle must be emitted under build/embed.");
+assert.ok(
+    embedConfig.includes("fileName: () => \"lyrics-studio.js\""),
+    "Embed bundle filename must remain stable for Studio lazy loading.",
+);
 
 const tinyFonts = [...`${css}\n${embedCss}`.matchAll(/font-size:\s*(\d+(?:\.\d+)?)px/g)]
     .map(match => Number(match[1]))
