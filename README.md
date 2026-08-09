@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.7**
+- Version du fork : **6.3.8**
 
 ## Lyrics Studio (Phase 6)
 
@@ -21,6 +21,20 @@ Dans les deux modes Studio, seul le `trackId` canonique est nécessaire. Le mote
 Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
+
+### 6.3.8 — Studio line-state cascade hotfix
+
+Le smoke test visuel réel de `6.3.7` a montré que les bordures Studio teal/cyan étaient bien appliquées, mais que les aplats rose/violet du skin standalone restaient visibles. La cause était une priorité CSS explicite : `launchpad-skin.css` protège historiquement ses fonds `.line.select` et `.line.highlight` avec `!important`, tandis que les overrides embed de `6.3.7` n’utilisaient pas cette priorité.
+
+`6.3.8` rend donc **uniquement dans le Shadow DOM embarqué de Studio** les états de ligne réellement autoritaires :
+
+- lignes neutres : fond sombre neutre/teal, sans héritage violet ;
+- ligne sélectionnée : fond teal très discret, texte clair et bordure cyan ;
+- ligne active / en attente de timestamp : gradient teal sombre lisible, sans grand aplat saturé ;
+- survol d’une ligne neutre : accent teal léger ;
+- le garde `test-studio-embed-ux.mjs` vérifie désormais la vraie situation de cascade : le skin standalone conserve ses `!important`, et l’embed doit explicitement les battre avec ses propres règles scoped.
+
+Le standalone conserve son apparence historique. Aucun moteur de synchronisation, parser, endpoint, Worker, stockage R2 ou contrat `lyrics.txt` n’est modifié.
 
 ### 6.3.7 — Studio embed UX polish
 
@@ -131,7 +145,7 @@ La page Paramètres affiche :
 - l’application Pages standalone dans `build/` ;
 - le moteur embarquable stable dans `build/embed/lyrics-studio.js` ;
 - un contrôle post-build qui vérifie que l’embed peut enregistrer son Web Component sans dépendance Node résiduelle ;
-- un garde UX embed qui empêche le retour des confirmations overlay et des états de lignes hors-charte Studio.
+- un garde UX embed qui empêche le retour des confirmations overlay et vérifie maintenant que les états de lignes Studio gagnent réellement la cascade sur le skin standalone.
 
 Ces informations sont injectées automatiquement par Vite au moment du build afin que la version affichée corresponde au dépôt déployé.
 
