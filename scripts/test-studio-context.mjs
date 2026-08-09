@@ -95,7 +95,10 @@ for (
         "lang.editor.removeEmptyLines",
         "removeNonTimestampBracketTags",
         "removeEmptyLyricLines",
-        "Simple clic = sélectionner · double-clic = revenir au timestamp · Espace = timestamp + ligne suivante.",
+        "Simple clic = sélectionner",
+        "double-clic = revenir au timestamp",
+        "Espace = timestamp + ligne",
+        "suivante.",
     ]
 ) assert.ok(embed.includes(required), `Embedded LRC engine contract missing ${required}.`);
 
