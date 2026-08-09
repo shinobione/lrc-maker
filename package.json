@@ -1,6 +1,6 @@
 {
     "name": "lrc-maker",
-    "version": "6.3.0",
+    "version": "6.3.1",
     "description": "SHINOBIWAN LRC Maker — éditeur et synchroniseur LRC moderne pour paroles horodatées.",
     "repository": "https://github.com/shinobione/lrc-maker.git",
     "author": "magic-akari <akari.ccino@gmail.com>",
@@ -22,7 +22,7 @@
     "type": "module",
     "scripts": {
         "start": "vite",
-        "build": "vite build && vite build --config vite.embed.config.ts",
+        "build": "vite build && vite build --config vite.embed.config.ts && node scripts/test-embed-bundle.mjs",
         "fix:fmt": "dprint fmt",
         "check:fmt": "dprint check",
         "check:lint": "oxlint src -D correctness",
