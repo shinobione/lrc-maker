@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.3**
+- Version du fork : **6.3.4**
 
 ## Lyrics Studio (Phase 6)
 
@@ -22,6 +22,18 @@ Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste 
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
 
+### 6.3.4 — native synchronization flow restore hotfix
+
+Le workflow historique du `Synchronizer` est restauré dans **les deux modes, standalone et embarqué** :
+
+- **simple clic** : sélectionne uniquement la ligne ;
+- **double-clic** : replace l’audio sur le timestamp déjà associé à cette ligne ;
+- **Espace** : écrit le temps courant sur la ligne sélectionnée puis sélectionne automatiquement la ligne suivante.
+
+Le seek direct ajouté au simple clic en 6.3.2 a été retiré. Il interférait avec le flux natif `sélection → Espace → ligne suivante` lors des corrections en cours de lecture et pouvait conduire l’utilisateur à retimestamp-er la ligne précédente au lieu de poursuivre la séquence attendue.
+
+Le hotfix restaure volontairement le comportement du moteur antérieur au commit de click-to-seek, sans modifier le parser, la sauvegarde canonique, Track Manager, R2 ni le contrat `lyrics.txt`. Le test Phase 6 vérifie désormais qu’un simple clic **ne modifie pas directement `audioRef.currentTime`**, que le double-clic reste disponible et que `ActionType.next` continue à poser le timestamp puis avancer la sélection.
+
 ### 6.3.3 — canonical reread normalization hotfix
 
 La vérification post-save conserve son garde-fou de relecture canonique, mais compare désormais la **forme canonique** des paroles : éventuel BOM UTF-8 retiré et fins de ligne `CRLF` / `CR` normalisées en `LF`, exactement comme le Writer Track Manager. Une différence de simple encodage de fin de ligne ne provoque donc plus le faux message `La relecture canonique ne correspond pas aux paroles sauvegardées`, tandis qu’une vraie différence de paroles continue à bloquer.
@@ -30,9 +42,9 @@ Le texte envoyé aux routes `lyrics/sync/validate` et `lyrics/sync/save` est lui
 
 ### 6.3.2 — embedded editor parity hotfix
 
-Le mode embarqué récupère les outils Lyrics utiles du standalone : **Supprimer les tags [ ]** et **Supprimer les lignes vides**. La suppression des tags conserve explicitement les timestamps LRC (`[00:12.340]`) et ne retire que les tags non temporels entre crochets.
+Le mode embarqué a récupéré les outils Lyrics utiles du standalone : **Supprimer les tags [ ]** et **Supprimer les lignes vides**. La suppression des tags conserve explicitement les timestamps LRC (`[00:12.340]`) et ne retire que les tags non temporels entre crochets.
 
-Le `Synchronizer` partagé repositionne désormais immédiatement l’audio lorsqu’une ligne timestampée est cliquée. Le même comportement est donc disponible dans le standalone et dans SHINOBIWAN Studio, ce qui permet de revenir instantanément au timestamp sélectionné pour le contrôler ou le recaler.
+Cette version avait aussi ajouté un seek immédiat au simple clic sur une ligne timestampée. Cette partie du changement est **retirée en 6.3.4** afin de revenir au workflow natif et fiable du synchroniseur ; les outils de nettoyage restent conservés.
 
 ### 6.3.1 — embedded runtime hotfix
 
@@ -57,15 +69,15 @@ Cette version conserve le moteur LRC et le workflow de synchronisation qui font 
 2. Si nécessaire, utilise **Supprimer les lignes vides** ou **Supprimer les tags [ ]** dans la barre d'outils.
 3. Charge un fichier audio.
 4. Ouvre l'outil de synchronisation.
-5. Clique une ligne timestampée pour placer immédiatement la lecture à cet instant.
-6. Utilise `Espace` pour poser les timestamps pendant la lecture.
+5. **Simple clic** sur une ligne pour la sélectionner ; **double-clic** sur une ligne déjà timestampée pour replacer l’audio sur son timestamp.
+6. Utilise `Espace` pour poser le timestamp courant : LRC Maker avance ensuite automatiquement sur la ligne suivante.
 7. Reviens dans l'éditeur pour copier ou télécharger le fichier `.lrc`.
 
 Dans SHINOBIWAN Studio, les étapes 1 à 4 sont contextualisées automatiquement à partir du morceau sélectionné.
 
 ## Raccourcis principaux
 
-- `Espace` : insérer le timestamp sur la ligne sélectionnée.
+- `Espace` : insérer le timestamp sur la ligne sélectionnée et passer à la suivante.
 - `Retour arrière` / `Suppr` : supprimer le timestamp.
 - `Ctrl + Entrée` / `Cmd + Entrée` : lecture / pause.
 - `←` / `A` : reculer de 5 secondes.
