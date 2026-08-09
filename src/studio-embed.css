@@ -59,7 +59,7 @@ button {
 
 .studio-embed-shell {
     display: grid;
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto minmax(0, 1fr) auto;
     overflow: hidden;
 }
 
@@ -129,7 +129,8 @@ button {
     gap: 8px;
 }
 
-.studio-embed-actions button {
+.studio-embed-actions button,
+.studio-embed-toolbar button {
     min-height: 34px;
     padding: 0 12px;
     color: #a9c0c1;
@@ -141,9 +142,11 @@ button {
     cursor: pointer;
 }
 
-.studio-embed-actions button:hover {
+.studio-embed-actions button:hover,
+.studio-embed-toolbar button:hover {
     color: #d9efed;
     border-color: rgba(82, 227, 214, 0.3);
+    background: rgba(82, 227, 214, 0.045);
 }
 
 .studio-embed-actions .studio-embed-save {
@@ -152,9 +155,34 @@ button {
     border-color: rgba(82, 227, 214, 0.6);
 }
 
-.studio-embed-actions button:disabled {
+.studio-embed-actions button:disabled,
+.studio-embed-toolbar button:disabled {
     opacity: 0.45;
     cursor: default;
+}
+
+.studio-embed-toolbar {
+    z-index: 7;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    min-height: 50px;
+    padding: 8px 16px;
+    border-bottom: 1px solid rgba(133, 231, 226, 0.08);
+    background: rgba(7, 16, 20, 0.88);
+}
+
+.studio-embed-toolbar button {
+    min-height: 32px;
+    color: #91c4c0;
+}
+
+.studio-embed-toolbar span {
+    margin-left: auto;
+    color: #72898d;
+    font-size: 11px;
+    line-height: 1.4;
 }
 
 .studio-embed-main {
@@ -187,6 +215,7 @@ button {
     line-height: 1.45;
     border-width: 1px;
     border-radius: 7px;
+    cursor: pointer;
 }
 
 .line:nth-child(even) {
@@ -309,6 +338,11 @@ button {
 
     .studio-embed-actions {
         justify-content: flex-start;
+    }
+
+    .studio-embed-toolbar span {
+        width: 100%;
+        margin-left: 0;
     }
 
     .studio-embed-main {
