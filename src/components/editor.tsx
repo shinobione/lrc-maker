@@ -3,6 +3,7 @@ import { useCallback, useContext, useEffect, useMemo, useRef, useState } from "r
 import type { Action as LrcAction } from "../hooks/useLrc.js";
 import { ActionType as LrcActionType } from "../hooks/useLrc.js";
 import { lrcFileName } from "../utils/lrc-file-name.js";
+import { removeEmptyLyricLines, removeNonTimestampBracketTags } from "../utils/lyrics-cleanup.js";
 import { appContext } from "./app.context.js";
 import { CopySVG, DownloadSVG, OpenFileSVG, UtilitySVG } from "./svg.js";
 import { toastPubSub } from "./toast.js";
@@ -13,9 +14,6 @@ const disableCheck = {
     autoCorrect: "off",
     spellCheck: false,
 };
-
-const bracketTagPattern = /\[([^\r\n]*?)\]/g;
-const lrcTimestampPattern = /^\d{1,3}:\d{2}(?:[.:]\d{1,3})?$/;
 
 const RemoveTagsSVG: React.FC = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
@@ -104,87 +102,38 @@ export const Eidtor: React.FC<{
         document.execCommand("copy");
     }, []);
 
-    const onRemoveEmptyLines = useCallback(() => {
-        const target = textarea.current;
-        if (!target) {
-            return;
-        }
+    const applyCleanup = useCallback(
+        (
+            cleanup: (text: string) => { value: string; removed: number },
+            noChangeMessage: string,
+            changedMessage: string,
+        ) => {
+            const target = textarea.current;
+            if (!target) return;
 
-        const lines = target.value.split(/\r?\n/);
-        const cleaned = lines.filter((line) => line.trim().length > 0);
+            const result = cleanup(target.value);
+            if (result.removed === 0) {
+                toastPubSub.pub({ type: "info", text: noChangeMessage });
+                return;
+            }
 
-        if (cleaned.length === lines.length) {
-            toastPubSub.pub({
-                type: "info",
-                text: lang.notify.noEmptyLines,
+            target.value = result.value;
+            lrcDispatch({
+                type: LrcActionType.parse,
+                payload: { text: result.value, options: trimOptions },
             });
-            return;
-        }
+            toastPubSub.pub({ type: "success", text: changedMessage });
+        },
+        [lrcDispatch, trimOptions],
+    );
 
-        const value = cleaned.join("\n");
-        target.value = value;
-        lrcDispatch({
-            type: LrcActionType.parse,
-            payload: { text: value, options: trimOptions },
-        });
-        toastPubSub.pub({
-            type: "success",
-            text: lang.notify.emptyLinesRemoved,
-        });
-    }, [lang.notify.emptyLinesRemoved, lang.notify.noEmptyLines, lrcDispatch, trimOptions]);
+    const onRemoveEmptyLines = useCallback(() => {
+        applyCleanup(removeEmptyLyricLines, lang.notify.noEmptyLines, lang.notify.emptyLinesRemoved);
+    }, [applyCleanup, lang.notify.emptyLinesRemoved, lang.notify.noEmptyLines]);
 
     const onRemoveTags = useCallback(() => {
-        const target = textarea.current;
-        if (!target) {
-            return;
-        }
-
-        const lines = target.value.split(/\r?\n/);
-        const cleaned: string[] = [];
-        let removedTags = 0;
-
-        for (const line of lines) {
-            let lineChanged = false;
-            const withoutTags = line.replace(bracketTagPattern, (match, content: string) => {
-                if (lrcTimestampPattern.test(content.trim())) {
-                    return match;
-                }
-
-                lineChanged = true;
-                removedTags += 1;
-                return "";
-            });
-
-            if (!lineChanged) {
-                cleaned.push(line);
-                continue;
-            }
-
-            const normalized = withoutTags.replace(/[ \t]{2,}/g, " ").trim();
-            if (normalized.length > 0) {
-                cleaned.push(normalized);
-            }
-        }
-
-        if (removedTags === 0) {
-            toastPubSub.pub({
-                type: "info",
-                text: lang.notify.noTags,
-            });
-            return;
-        }
-
-        const value = cleaned.join("\n");
-        target.value = value;
-        lrcDispatch({
-            type: LrcActionType.parse,
-            payload: { text: value, options: trimOptions },
-        });
-        toastPubSub.pub({
-            type: "success",
-            text: lang.notify.tagsRemoved,
-        });
-    }, [lang.notify.noTags, lang.notify.tagsRemoved, lrcDispatch, trimOptions]);
+        applyCleanup(removeNonTimestampBracketTags, lang.notify.noTags, lang.notify.tagsRemoved);
+    }, [applyCleanup, lang.notify.noTags, lang.notify.tagsRemoved]);
 
     const downloadName = useMemo(() => lrcFileName(lrcState.info), [lrcState.info]);
 
