@@ -267,32 +267,40 @@ button {
     transition: color 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
 }
 
-.line:nth-child(even) {
-    background: rgba(255, 255, 255, 0.014);
+/* The standalone LaunchPAD skin uses !important for its purple row fills.
+ * Studio must win that cascade inside the embed only. */
+.line:not(.select):not(.highlight) {
+    background: rgba(10, 20, 24, 0.86) !important;
 }
 
-.line:nth-child(odd) {
-    background: rgba(82, 227, 214, 0.012);
+.line:nth-child(even):not(.select):not(.highlight) {
+    background: rgba(12, 23, 27, 0.9) !important;
+}
+
+.line:hover:not(.select):not(.highlight) {
+    background: rgba(82, 227, 214, 0.045) !important;
+    border-color: rgba(82, 227, 214, 0.16) !important;
 }
 
 .line.select {
-    color: #e8fbf8;
-    background: rgba(82, 227, 214, 0.075);
-    border-color: rgba(82, 227, 214, 0.66);
-    box-shadow: inset 3px 0 0 rgba(82, 227, 214, 0.86), 0 0 0 1px rgba(82, 227, 214, 0.045);
+    color: #e8fbf8 !important;
+    background: rgba(82, 227, 214, 0.075) !important;
+    border-color: rgba(82, 227, 214, 0.66) !important;
+    box-shadow: inset 3px 0 0 rgba(82, 227, 214, 0.86), 0 0 0 1px rgba(82, 227, 214, 0.045) !important;
 }
 
 .line.highlight {
-    color: #edfafa;
-    background: linear-gradient(90deg, rgba(82, 227, 214, 0.19), rgba(82, 227, 214, 0.07));
-    border-color: rgba(82, 227, 214, 0.42);
-    box-shadow: inset 3px 0 0 #52e3d6;
+    color: #edfafa !important;
+    background: linear-gradient(90deg, rgba(82, 227, 214, 0.19), rgba(82, 227, 214, 0.07)) !important;
+    border-color: rgba(82, 227, 214, 0.42) !important;
+    box-shadow: inset 3px 0 0 #52e3d6 !important;
 }
 
 .line.highlight.select {
-    background: linear-gradient(90deg, rgba(82, 227, 214, 0.24), rgba(82, 227, 214, 0.095));
-    border-color: rgba(110, 238, 226, 0.78);
-    box-shadow: inset 3px 0 0 #7bf2e6, 0 0 18px rgba(82, 227, 214, 0.055);
+    color: #f4ffff !important;
+    background: linear-gradient(90deg, rgba(82, 227, 214, 0.24), rgba(82, 227, 214, 0.095)) !important;
+    border-color: rgba(110, 238, 226, 0.78) !important;
+    box-shadow: inset 3px 0 0 #7bf2e6, 0 0 18px rgba(82, 227, 214, 0.055) !important;
 }
 
 .line-time {
@@ -303,7 +311,7 @@ button {
 
 .line.select .line-time,
 .line.highlight .line-time {
-    color: #9cece4;
+    color: #9cece4 !important;
 }
 
 .curser {
