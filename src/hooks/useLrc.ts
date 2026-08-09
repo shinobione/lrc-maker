@@ -1,6 +1,7 @@
 import type { State as LrcState, TrimOptios } from "@lrc-maker/lrc-parser";
 import { parser } from "@lrc-maker/lrc-parser";
 import { useReducer } from "react";
+import { guard, timestampSelectedLine, timestampSelectedLineAndAdvance } from "./lrc-transitions";
 
 type InitArgs = Readonly<{
     text: string;
@@ -43,16 +44,6 @@ export type Action = Map$Type$Payload<
     ActionType
 >;
 
-export const guard = (value: number, min: number, max: number): number => {
-    if (value < min) {
-        return min;
-    }
-    if (value > max) {
-        return max;
-    }
-    return value;
-};
-
 const mergeObject = <T extends O, O>(target: T, obj: O): T => {
     for (const i in obj) {
         if (target[i] !== obj[i]) {
@@ -61,24 +52,6 @@ const mergeObject = <T extends O, O>(target: T, obj: O): T => {
     }
 
     return target;
-};
-
-export const timestampSelectedLine = (state: IState, time: number): IState => {
-    const index = state.selectIndex;
-
-    let lyric = state.lyric;
-    if (lyric[index].time !== time) {
-        const newLyric = lyric.slice();
-        newLyric[index] = { text: lyric[index].text, time };
-        lyric = newLyric;
-    }
-
-    return { ...state, lyric, currentTime: time, nextTime: -Infinity };
-};
-
-export const timestampSelectedLineAndAdvance = (state: IState, time: number): IState => {
-    const selectIndex = guard(state.selectIndex + 1, 0, state.lyric.length - 1);
-    return { ...timestampSelectedLine(state, time), selectIndex };
 };
 
 const reducer = (state: IState, action: Action): IState => {
