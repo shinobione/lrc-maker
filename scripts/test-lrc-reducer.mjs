@@ -4,30 +4,35 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import ts from "typescript";
 
-const sourcePath = "src/hooks/useLrc.ts";
-const source = fs.readFileSync(sourcePath, "utf8");
+const reducerPath = "src/hooks/useLrc.ts";
+const transitionPath = "src/hooks/lrc-transitions.ts";
+const reducerSource = fs.readFileSync(reducerPath, "utf8");
+const transitionSource = fs.readFileSync(transitionPath, "utf8");
 
 assert.match(
-    source,
+    reducerSource,
     /case ActionType\.next:\s*return timestampSelectedLineAndAdvance\(state, action\.payload\);/,
     "ActionType.next must use the behaviorally tested timestamp+advance transition.",
 );
 assert.match(
-    source,
+    reducerSource,
     /case ActionType\.time:\s*return timestampSelectedLine\(state, action\.payload\);/,
     "ActionType.time must use the tested selected-line timestamp transition.",
 );
+assert.ok(
+    reducerSource.includes('from "./lrc-transitions"'),
+    "Reducer must consume the isolated pure transition module tested below.",
+);
 
-const output = ts.transpileModule(source, {
+const output = ts.transpileModule(transitionSource, {
     compilerOptions: {
         target: ts.ScriptTarget.ES2022,
         module: ts.ModuleKind.ESNext,
-        jsx: ts.JsxEmit.ReactJSX,
     },
-    fileName: sourcePath,
+    fileName: transitionPath,
 }).outputText;
 
-const tempPath = path.resolve(`.tmp-useLrc-reducer-${process.pid}-${Date.now()}.mjs`);
+const tempPath = path.resolve(`.tmp-lrc-transitions-${process.pid}-${Date.now()}.mjs`);
 fs.writeFileSync(tempPath, output, "utf8");
 
 try {
@@ -67,4 +72,5 @@ try {
     console.log("LRC reducer behavior passed: Space stamps selected line N then advances exactly to N+1.");
 } finally {
     fs.rmSync(tempPath, { force: true });
+    assert.equal(fs.existsSync(tempPath), false, "Reducer test must clean its temporary module.");
 }
