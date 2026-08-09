@@ -63,6 +63,24 @@ const mergeObject = <T extends O, O>(target: T, obj: O): T => {
     return target;
 };
 
+export const timestampSelectedLine = (state: IState, time: number): IState => {
+    const index = state.selectIndex;
+
+    let lyric = state.lyric;
+    if (lyric[index].time !== time) {
+        const newLyric = lyric.slice();
+        newLyric[index] = { text: lyric[index].text, time };
+        lyric = newLyric;
+    }
+
+    return { ...state, lyric, currentTime: time, nextTime: -Infinity };
+};
+
+export const timestampSelectedLineAndAdvance = (state: IState, time: number): IState => {
+    const selectIndex = guard(state.selectIndex + 1, 0, state.lyric.length - 1);
+    return { ...timestampSelectedLine(state, time), selectIndex };
+};
+
 const reducer = (state: IState, action: Action): IState => {
     switch (action.type) {
         case ActionType.parse: {
@@ -103,35 +121,11 @@ const reducer = (state: IState, action: Action): IState => {
             return mergeObject(state, record);
         }
 
-        case ActionType.next: {
-            const index = state.selectIndex;
+        case ActionType.next:
+            return timestampSelectedLineAndAdvance(state, action.payload);
 
-            const lyric = state.lyric;
-
-            const selectIndex = guard(index + 1, 0, lyric.length - 1);
-
-            return {
-                ...reducer(state, {
-                    type: ActionType.time,
-                    payload: action.payload,
-                }),
-                selectIndex,
-            };
-        }
-
-        case ActionType.time: {
-            const time = action.payload;
-            const index = state.selectIndex;
-
-            let lyric = state.lyric;
-            if (lyric[index].time !== time) {
-                const newLyric = lyric.slice();
-                newLyric[index] = { text: lyric[index].text, time };
-                lyric = newLyric;
-            }
-
-            return { ...state, lyric, currentTime: time, nextTime: -Infinity };
-        }
+        case ActionType.time:
+            return timestampSelectedLine(state, action.payload);
 
         case ActionType.info: {
             const { name, value } = action.payload;
