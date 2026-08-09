@@ -20,7 +20,7 @@ assert.match(
     "ActionType.time must use the tested selected-line timestamp transition.",
 );
 assert.ok(
-    reducerSource.includes('from "./lrc-transitions"'),
+    reducerSource.includes("from \"./lrc-transitions\""),
     "Reducer must consume the isolated pure transition module tested below.",
 );
 
