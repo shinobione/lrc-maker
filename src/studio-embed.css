@@ -59,7 +59,7 @@ button {
 
 .studio-embed-shell {
     display: grid;
-    grid-template-rows: auto auto minmax(0, 1fr) auto;
+    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
     overflow: hidden;
 }
 
@@ -185,6 +185,54 @@ button {
     line-height: 1.4;
 }
 
+/* Embedded confirmations belong to the document flow so they never cover Lyrics controls/content. */
+.toast-queue {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 6;
+    width: 100% !important;
+    max-width: none !important;
+    overflow: hidden;
+    pointer-events: none;
+    background: rgba(6, 14, 18, 0.92);
+}
+
+.toast {
+    min-height: 38px;
+    max-height: 54px;
+    margin: 6px 16px !important;
+    color: #d8eceb !important;
+    background: rgba(11, 27, 30, 0.98) !important;
+    border: 1px solid rgba(82, 227, 214, 0.18) !important;
+    border-radius: 9px !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18) !important;
+}
+
+.toast-badge {
+    width: 20px !important;
+    height: 20px !important;
+    margin: 8px !important;
+}
+
+.toast-info {
+    color: #71cde8 !important;
+}
+
+.toast-success {
+    color: #6ee0ae !important;
+}
+
+.toast-warning {
+    color: #e1b96d !important;
+}
+
+.toast-text {
+    margin: 8px 10px 8px 0 !important;
+    color: #c9dddd;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
 .studio-embed-main {
     position: relative;
     min-height: 0;
@@ -216,6 +264,7 @@ button {
     border-width: 1px;
     border-radius: 7px;
     cursor: pointer;
+    transition: color 140ms ease, background 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
 }
 
 .line:nth-child(even) {
@@ -228,13 +277,22 @@ button {
 
 .line.select {
     color: #e8fbf8;
-    background: rgba(82, 227, 214, 0.055);
-    border-color: rgba(82, 227, 214, 0.62);
+    background: rgba(82, 227, 214, 0.075);
+    border-color: rgba(82, 227, 214, 0.66);
+    box-shadow: inset 3px 0 0 rgba(82, 227, 214, 0.86), 0 0 0 1px rgba(82, 227, 214, 0.045);
 }
 
 .line.highlight {
-    color: #031011;
-    background: #62ddd2;
+    color: #edfafa;
+    background: linear-gradient(90deg, rgba(82, 227, 214, 0.19), rgba(82, 227, 214, 0.07));
+    border-color: rgba(82, 227, 214, 0.42);
+    box-shadow: inset 3px 0 0 #52e3d6;
+}
+
+.line.highlight.select {
+    background: linear-gradient(90deg, rgba(82, 227, 214, 0.24), rgba(82, 227, 214, 0.095));
+    border-color: rgba(110, 238, 226, 0.78);
+    box-shadow: inset 3px 0 0 #7bf2e6, 0 0 18px rgba(82, 227, 214, 0.055);
 }
 
 .line-time {
@@ -243,8 +301,9 @@ button {
     font-variant-numeric: tabular-nums;
 }
 
-.line.select .line-time, .line.highlight .line-time {
-    color: inherit;
+.line.select .line-time,
+.line.highlight .line-time {
+    color: #9cece4;
 }
 
 .curser {
@@ -316,10 +375,6 @@ button {
     max-width: 110px;
 }
 
-.toast {
-    font-size: 12px !important;
-}
-
 .akari-odango-loading {
     position: absolute !important;
     width: 90px !important;
@@ -356,6 +411,10 @@ button {
         border-radius: 10px;
     }
 
+    .toast {
+        margin-inline: 10px !important;
+    }
+
     .line {
         padding-left: 90px;
         font-size: 13px !important;
@@ -368,5 +427,11 @@ button {
     .space-button {
         width: 58px !important;
         height: 58px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .line {
+        transition: none;
     }
 }

@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.6**
+- Version du fork : **6.3.7**
 
 ## Lyrics Studio (Phase 6)
 
@@ -21,6 +21,17 @@ Dans les deux modes Studio, seul le `trackId` canonique est nécessaire. Le mote
 Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
+
+### 6.3.7 — Studio embed UX polish
+
+Cette version ne change aucun contrat Lyrics, aucun endpoint et aucun comportement de sauvegarde. Elle corrige uniquement la présentation du moteur lorsqu’il est embarqué dans SHINOBIWAN Studio :
+
+- les confirmations des outils de nettoyage et les notifications comme `Audio chargé` sont placées dans une **barre de statut intégrée au layout**, entre la toolbar et les paroles, au lieu d’un toast fixe qui masque l’interface ;
+- les lignes sélectionnées et la ligne active/pending utilisent désormais la palette sombre teal/cyan de Studio avec texte clair et bordure lisible, sans grand aplat violet/bleu ;
+- l’application standalone conserve son système de toast et son apparence historique ; les overrides sont limités au bundle Studio Shadow DOM ;
+- un garde `test-studio-embed-ux.mjs` protège la position non-overlay des confirmations et la palette de lignes.
+
+Le contrat canonique reste strictement inchangé : `tracks/<slug>/lyrics.txt` est l’unique source de vérité ; les timestamps qu’il contient définissent la synchronisation ; `.lrc` reste export/compatibilité uniquement. Aucun Worker ou objet R2 n’est modifié par cette release frontend.
 
 ### 6.3.6 — PHASE UX canonical duration evidence
 
@@ -119,7 +130,8 @@ La page Paramètres affiche :
 
 - l’application Pages standalone dans `build/` ;
 - le moteur embarquable stable dans `build/embed/lyrics-studio.js` ;
-- un contrôle post-build qui vérifie que l’embed peut enregistrer son Web Component sans dépendance Node résiduelle.
+- un contrôle post-build qui vérifie que l’embed peut enregistrer son Web Component sans dépendance Node résiduelle ;
+- un garde UX embed qui empêche le retour des confirmations overlay et des états de lignes hors-charte Studio.
 
 Ces informations sont injectées automatiquement par Vite au moment du build afin que la version affichée corresponde au dépôt déployé.
 
