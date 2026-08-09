@@ -160,7 +160,9 @@ export const StudioProvider: React.FC<React.PropsWithChildren<StudioProviderProp
             const expectedCanonicalLyrics = canonicalizeLyricsText(lyrics);
             const observedAudioDuration = Number(audioRef.duration);
             if (!Number.isFinite(observedAudioDuration) || observedAudioDuration <= 0) {
-                throw new Error("La durée de l’audio canonique n’est pas encore disponible. Attendez son chargement puis réessayez.");
+                throw new Error(
+                    "La durée de l’audio canonique n’est pas encore disponible. Attendez son chargement puis réessayez.",
+                );
             }
             const common = {
                 trackId: activeLaunch.trackId,
