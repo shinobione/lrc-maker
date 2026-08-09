@@ -7,9 +7,9 @@ const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
 
 assert.equal(pkg.version, "6.3.7", "Studio embed UX polish must ship as LRC Maker 6.3.7.");
 
-const toolbarIndex = embed.indexOf('className="studio-embed-toolbar"');
+const toolbarIndex = embed.indexOf("className=\"studio-embed-toolbar\"");
 const toastIndex = embed.indexOf("<Toast />");
-const mainIndex = embed.indexOf('<main className="studio-embed-main">');
+const mainIndex = embed.indexOf("<main className=\"studio-embed-main\">");
 const footerIndex = embed.indexOf("<Footer />");
 assert.ok(
     toolbarIndex >= 0 && toastIndex > toolbarIndex && mainIndex > toastIndex && footerIndex > mainIndex,
