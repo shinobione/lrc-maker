@@ -5,13 +5,22 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.2.0**
+- Version du fork : **6.3.0**
 
 ## Lyrics Studio (Phase 6)
 
-Le mode autonome reste inchangé. Lorsqu’il est ouvert depuis SHINOBIWAN Studio avec `studio=lyrics-v1`, LRC Maker reçoit uniquement le `trackId` canonique et un chemin de retour interne. Il charge l’audio et `tracks/<slug>/lyrics.txt` via Track Manager, puis valide et sauvegarde exclusivement ce même `lyrics.txt` avec sa révision et son ETag.
+Le mode autonome reste disponible. LRC Maker expose maintenant deux consommateurs du **même moteur de synchronisation** :
+
+1. l’application standalone historique ;
+2. le bundle `build/embed/lyrics-studio.js`, monté par SHINOBIWAN Studio sous forme de Web Component `shinobiwan-lyrics-studio`.
+
+Le mode embarqué réutilise le vrai `Synchronizer`, le vrai lecteur audio et le même pipeline de sérialisation. Il est isolé par Shadow DOM afin de ne pas injecter la feuille de style LRC Maker dans Studio. Ce n’est **pas une iframe** et ce n’est pas une réécriture du moteur.
+
+Dans les deux modes Studio, seul le `trackId` canonique est nécessaire. Le moteur charge l’audio et `tracks/<slug>/lyrics.txt` via Track Manager, puis valide et sauvegarde exclusivement ce même `lyrics.txt` avec sa révision et son ETag.
 
 Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
+
+Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
 
 ## Philosophie du fork
 
@@ -35,6 +44,8 @@ Cette version conserve le moteur LRC et le workflow de synchronisation qui font 
 5. Utilise `Espace` pour poser les timestamps pendant la lecture.
 6. Reviens dans l'éditeur pour copier ou télécharger le fichier `.lrc`.
 
+Dans SHINOBIWAN Studio, les étapes 1 à 4 sont contextualisées automatiquement à partir du morceau sélectionné.
+
 ## Raccourcis principaux
 
 - `Espace` : insérer le timestamp sur la ligne sélectionnée.
@@ -56,6 +67,11 @@ La page Paramètres affiche :
 - la version définie par ce fork (`package.json`) ;
 - le hash court du commit réellement compilé ;
 - la date du dernier commit utilisé pour le build.
+
+`pnpm run build` produit désormais :
+
+- l’application Pages standalone dans `build/` ;
+- le moteur embarquable stable dans `build/embed/lyrics-studio.js`.
 
 Ces informations sont injectées automatiquement par Vite au moment du build afin que la version affichée corresponde au dépôt déployé.
 
