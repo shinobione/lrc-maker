@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.2**
+- Version du fork : **6.3.3**
 
 ## Lyrics Studio (Phase 6)
 
@@ -21,6 +21,12 @@ Dans les deux modes Studio, seul le `trackId` canonique est nécessaire. Le mote
 Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
+
+### 6.3.3 — canonical reread normalization hotfix
+
+La vérification post-save conserve son garde-fou de relecture canonique, mais compare désormais la **forme canonique** des paroles : éventuel BOM UTF-8 retiré et fins de ligne `CRLF` / `CR` normalisées en `LF`, exactement comme le Writer Track Manager. Une différence de simple encodage de fin de ligne ne provoque donc plus le faux message `La relecture canonique ne correspond pas aux paroles sauvegardées`, tandis qu’une vraie différence de paroles continue à bloquer.
+
+Le texte envoyé aux routes `lyrics/sync/validate` et `lyrics/sync/save` est lui aussi normalisé avant écriture. Un test de régression couvre BOM, CRLF/LF et vérifie qu’une modification réelle des paroles reste détectée.
 
 ### 6.3.2 — embedded editor parity hotfix
 

@@ -28,13 +28,40 @@ for (
         "\"Content-Type\": \"text/plain;charset=UTF-8\"",
         "expectedUpdatedAt: context.lyrics.updatedAt",
         "expectedLyricsEtag: context.lyrics.etag",
-        "refreshed.lyrics.text !== lyrics",
+        "export const canonicalizeLyricsText",
+        "replace(/^\\uFEFF/, \"\")",
+        "replace(/\\r\\n?/g, \"\\n\")",
+        "const expectedCanonicalLyrics = canonicalizeLyricsText(lyrics)",
+        "lyrics: expectedCanonicalLyrics",
+        "canonicalizeLyricsText(refreshed.lyrics.text) !== expectedCanonicalLyrics",
         "shinobiwan:lyrics-saved:v1",
         "location.origin",
         "embedded?: boolean",
         "onSaved?: (detail: StudioSavedDetail) => void",
     ]
 ) assert.ok(context.includes(required), `Studio context contract missing ${required}.`);
+
+assert.ok(
+    !context.includes("refreshed.lyrics.text !== lyrics"),
+    "Canonical reread must not compare raw editor text against backend-normalized lyrics.txt.",
+);
+
+const canonicalize = text => String(text ?? "").replace(/^\uFEFF/, "").replace(/\r\n?/g, "\n");
+assert.equal(
+    canonicalize("\uFEFF[00:01.000] One\r\n[00:02.000] Two\r"),
+    "[00:01.000] One\n[00:02.000] Two\n",
+    "Canonical comparison must match Track Manager BOM and line-ending normalization.",
+);
+assert.equal(
+    canonicalize("[00:01.000] One\r\n") === canonicalize("[00:01.000] One\n"),
+    true,
+    "CRLF and LF forms of the same lyrics must compare equal after canonicalization.",
+);
+assert.notEqual(
+    canonicalize("[00:01.000] One\n"),
+    canonicalize("[00:01.000] Changed\n"),
+    "A real lyric difference must still fail the canonical equality guard.",
+);
 
 for (const forbidden of ["query.get(\"lyrics\")", "query.get(\"audio\")", "lyrics.lrc"]) {
     assert.ok(!context.includes(forbidden), `Studio context must not accept ${forbidden}.`);
@@ -106,5 +133,5 @@ const tinyFonts = [...`${css}\n${embedCss}`.matchAll(/font-size:\s*(\d+(?:\.\d+)
 assert.deepEqual(tinyFonts, [], `Studio context UI must not introduce text below 11px; found ${tinyFonts.join(", ")}.`);
 
 console.log(
-    "LRC Maker Studio context passed: canonical load/save, embedded cleanup parity, timestamp click-to-seek, shadow isolation and readable UI.",
+    "LRC Maker Studio context passed: canonical load/save, normalized reread equality, embedded cleanup parity, timestamp click-to-seek, shadow isolation and readable UI.",
 );
