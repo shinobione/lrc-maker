@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.1**
+- Version du fork : **6.3.2**
 
 ## Lyrics Studio (Phase 6)
 
@@ -22,6 +22,12 @@ Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste 
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
 
+### 6.3.2 — embedded editor parity hotfix
+
+Le mode embarqué récupère les outils Lyrics utiles du standalone : **Supprimer les tags [ ]** et **Supprimer les lignes vides**. La suppression des tags conserve explicitement les timestamps LRC (`[00:12.340]`) et ne retire que les tags non temporels entre crochets.
+
+Le `Synchronizer` partagé repositionne désormais immédiatement l’audio lorsqu’une ligne timestampée est cliquée. Le même comportement est donc disponible dans le standalone et dans SHINOBIWAN Studio, ce qui permet de revenir instantanément au timestamp sélectionné pour le contrôler ou le recaler.
+
 ### 6.3.1 — embedded runtime hotfix
 
 Le bundle embarqué compile désormais explicitement React en mode production pour le navigateur. Cela supprime la référence résiduelle `process.env.NODE_ENV` qui pouvait interrompre l’exécution avant l’enregistrement du Web Component. Le build exécute aussi un garde post-build qui refuse tout bundle embarqué contenant encore une référence `process.env` non résolue ou ne contenant pas l’enregistrement `customElements.define`.
@@ -34,7 +40,7 @@ Cette version conserve le moteur LRC et le workflow de synchronisation qui font 
 - sortie **lyrics-only**, sans bloc de métadonnées ni tag `[tool: ...]` injecté automatiquement ;
 - suppression de l'intégration GitHub Gist de l'interface ;
 - suppression du lien vers l'ancien site LRC Utils ;
-- fonction **Supprimer les lignes vides** intégrée directement à l'éditeur ;
+- fonctions **Supprimer les lignes vides** et **Supprimer les tags [ ]** intégrées directement à l'éditeur ;
 - interface disponible uniquement en **Français** et **English** ;
 - interface LaunchPAD sombre, glassmorphism et responsive ;
 - branding et liens projet alignés sur le dépôt `shinobione/lrc-maker`.
@@ -42,11 +48,12 @@ Cette version conserve le moteur LRC et le workflow de synchronisation qui font 
 ## Utilisation
 
 1. Ouvre l'éditeur et colle ou importe les paroles.
-2. Si nécessaire, utilise le bouton **Supprimer les lignes vides** directement dans la barre d'outils de l'éditeur.
+2. Si nécessaire, utilise **Supprimer les lignes vides** ou **Supprimer les tags [ ]** dans la barre d'outils.
 3. Charge un fichier audio.
 4. Ouvre l'outil de synchronisation.
-5. Utilise `Espace` pour poser les timestamps pendant la lecture.
-6. Reviens dans l'éditeur pour copier ou télécharger le fichier `.lrc`.
+5. Clique une ligne timestampée pour placer immédiatement la lecture à cet instant.
+6. Utilise `Espace` pour poser les timestamps pendant la lecture.
+7. Reviens dans l'éditeur pour copier ou télécharger le fichier `.lrc`.
 
 Dans SHINOBIWAN Studio, les étapes 1 à 4 sont contextualisées automatiquement à partir du morceau sélectionné.
 
