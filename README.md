@@ -5,7 +5,7 @@ Interface web légère pour créer et synchroniser des fichiers **LRC** avec un 
 - Application : https://shinobione.github.io/lrc-maker/
 - Dépôt : https://github.com/shinobione/lrc-maker
 - Issues : https://github.com/shinobione/lrc-maker/issues
-- Version du fork : **6.3.0**
+- Version du fork : **6.3.1**
 
 ## Lyrics Studio (Phase 6)
 
@@ -21,6 +21,10 @@ Dans les deux modes Studio, seul le `trackId` canonique est nécessaire. Le mote
 Le texte et l’audio ne transitent jamais dans l’URL. Un export `.lrc` reste possible pour la compatibilité, mais il n’est ni obligatoire, ni une seconde source de vérité, ni un signal de Content Health.
 
 Le mode embarqué ne propose pas de remplacement manuel de l’audio : l’audio vient du morceau canonique. Le standalone reste le fallback avancé si le bundle embarqué n’est pas disponible.
+
+### 6.3.1 — embedded runtime hotfix
+
+Le bundle embarqué compile désormais explicitement React en mode production pour le navigateur. Cela supprime la référence résiduelle `process.env.NODE_ENV` qui pouvait interrompre l’exécution avant l’enregistrement du Web Component. Le build exécute aussi un garde post-build qui refuse tout bundle embarqué contenant encore une référence `process.env` non résolue ou ne contenant pas l’enregistrement `customElements.define`.
 
 ## Philosophie du fork
 
@@ -71,7 +75,8 @@ La page Paramètres affiche :
 `pnpm run build` produit désormais :
 
 - l’application Pages standalone dans `build/` ;
-- le moteur embarquable stable dans `build/embed/lyrics-studio.js`.
+- le moteur embarquable stable dans `build/embed/lyrics-studio.js` ;
+- un contrôle post-build qui vérifie que l’embed peut enregistrer son Web Component sans dépendance Node résiduelle.
 
 Ces informations sont injectées automatiquement par Vite au moment du build afin que la version affichée corresponde au dépôt déployé.
 
