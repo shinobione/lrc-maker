@@ -22,12 +22,13 @@
     "type": "module",
     "scripts": {
         "start": "vite",
-        "build": "vite build && vite build --config vite.embed.config.ts && node scripts/test-embed-bundle.mjs && node scripts/test-studio-embed-ux.mjs",
+        "build": "vite build && vite build --config vite.embed.config.ts && node scripts/test-embed-bundle.mjs && node scripts/test-studio-embed-ux.mjs && node scripts/test-pwa-isolation.mjs",
         "fix:fmt": "dprint fmt",
         "check:fmt": "dprint check",
         "check:lint": "oxlint src -D correctness",
         "check:studio": "node scripts/test-studio-context.mjs && node scripts/test-studio-embed-ux.mjs",
-        "check:reducer": "node scripts/test-lrc-reducer.mjs"
+        "check:reducer": "node scripts/test-lrc-reducer.mjs",
+        "check:pwa": "node scripts/test-pwa-isolation.mjs"
     },
     "imports": {
         "#const/*": "./src/const/*"
