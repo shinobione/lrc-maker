@@ -1,4 +1,5 @@
 {
+    "id": "/lrc-maker/",
     "background_color": "#05030b",
     "description": "SHINOBIWAN LRC Maker — create and synchronize timestamped lyrics with audio.",
     "display": "standalone",
@@ -22,7 +23,8 @@
     ],
     "name": "SHINOBIWAN LRC Maker",
     "short_name": "LRC Maker",
-    "start_url": "./",
+    "start_url": "/lrc-maker/",
+    "scope": "/lrc-maker/",
     "theme_color": "#05030b",
     "share_target": {
         "action": "./",
